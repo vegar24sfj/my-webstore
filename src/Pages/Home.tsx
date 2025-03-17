@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Home = () => {
   return (
     <div className="p-6">
@@ -6,9 +8,10 @@ const Home = () => {
         Find the best products at amazing prices! Click the button below to start shopping.
       </p>
       <div className="mt-4">
-        <a href="/shop" className="text-blue-500 text-lg font-semibold">
+        {/* Use Link here instead of <a> */}
+        <Link to="/shop" className="text-blue-500 text-lg font-semibold">
           Start Shopping
-        </a>
+        </Link>
       </div>
     </div>
   );
