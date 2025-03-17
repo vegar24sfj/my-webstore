@@ -17,7 +17,7 @@ export const useStore = create<Store>((set) => ({
       name: 'Product 2',
       category: 'clothing',
       price: 49.99,
-      image: '/images/1.png',
+      image: '/images/2.jpg',
     },
     {
       id: '3',
