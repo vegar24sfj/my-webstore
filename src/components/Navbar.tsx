@@ -14,12 +14,7 @@ const Navbar = ({ cart }: NavbarProps) => {
         <div className="flex items-center space-x-10">
           {/* Logo - Replace with the path to your logo */}
           <Link to="/" className="flex items-center">
-            <img
-              src="/src/images/logo.jpeg"
-              alt="Logo"
-              className="h-20 w-auto"
-            />{" "}
-            {/* Logo image */}
+            <img src="/images/logo.jpeg" alt="Logo" className="h-20 w-auto" />
           </Link>
 
           {/* Navigation Links */}
@@ -46,7 +41,8 @@ const Navbar = ({ cart }: NavbarProps) => {
         {/* Right Section with Cart */}
         <div className="flex items-center space-x-2">
           <Link to="/cart" className="hover:text-gray-200 flex items-center">
-            <FaShoppingCart className="text-gray-950 text-xl" /> {/* Cart Icon */}
+            <FaShoppingCart className="text-gray-950 text-xl" />{" "}
+            {/* Cart Icon */}
             {cart.length > 0 && (
               <span className="ml-2">{cart.length}</span>
             )}{" "}
