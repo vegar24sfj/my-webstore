@@ -10,14 +10,14 @@ export const useStore = create<Store>((set) => ({
       name: 'Product 1',
       category: 'electronics',
       price: 99.99,
-      image: '/images/1.png', // Replace with actual image paths
+      image: '/images/1.png',
     },
     {
       id: '2',
       name: 'Product 2',
       category: 'clothing',
       price: 49.99,
-      image: '/public/images/1.png',
+      image: '/images/1.png',
     },
     {
       id: '3',
