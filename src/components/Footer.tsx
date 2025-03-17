@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import logo from "../../public/images/logo.jpeg"; // Assuming you have a logo in your assets folder
+import logo from "../../src/images/logo.jpeg"; // Assuming you have a logo in your assets folder
 
 export function Footer() {
   return (

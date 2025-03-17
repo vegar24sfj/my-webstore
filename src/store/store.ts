@@ -10,21 +10,21 @@ export const useStore = create<Store>((set) => ({
       name: 'Product 1',
       category: 'electronics',
       price: 99.99,
-      image: '/public/images/1.png', // Replace with actual image paths
+      image: '/src/images/1.png', // Replace with actual image paths
     },
     {
       id: '2',
       name: 'Product 2',
       category: 'clothing',
       price: 49.99,
-      image: '/public/images/2.jpg',
+      image: '/src/images/2.jpg',
     },
     {
       id: '3',
       name: 'Product 3',
       category: 'home',
       price: 19.99,
-      image: '/public/images/3.jpg',
+      image: '/src/images/3.jpg',
     },
     // Add more products here
   ],
