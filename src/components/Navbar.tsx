@@ -14,7 +14,7 @@ const Navbar = ({ cart }: NavbarProps) => {
         <div className="flex items-center space-x-10">
           {/* Logo - Replace with the path to your logo */}
           <Link to="/" className="flex items-center">
-            <img src="/images/logo.jpeg" alt="Logo" className="h-20 w-auto" />
+            <img src="/public/images/logo.jpeg" alt="Logo" className="h-20 w-auto" />
           </Link>
 
           {/* Navigation Links */}
