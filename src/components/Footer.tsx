@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import logo from "../../src/images/logo.jpeg"; // Assuming you have a logo in your assets folder
 
 export function Footer() {
   return (
@@ -7,7 +6,9 @@ export function Footer() {
       <div className="max-w-6xl mx-auto flex justify-between items-start">
         {/* Left Side with Logo and Paragraph */}
         <div className="flex flex-col items-start">
-          <img src={logo} alt="Logo" className="w-20 mb-4" /> {/* Logo Image */}
+          {/* Updated image path */}
+          <img src="/images/logo.jpeg" alt="Logo" className="h-20 w-auto" />
+
           <p className="text-gray-400 text-sm">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae
             eros nec leo consectetur convallis. Integer et erat in dui
