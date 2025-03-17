@@ -1,76 +1,64 @@
-import { useNavigate } from 'react-router-dom';
-
-type CartItem = {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-  image: string;
-};
+import { CartItem } from "../types/types";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 
 type CartProps = {
   cart: CartItem[];
-  removeFromCart: (id: number) => void;
+  removeFromCart: (id: string) => void;
 };
 
 const Cart = ({ cart, removeFromCart }: CartProps) => {
-  const navigate = useNavigate();
-
-  const proceedToCheckout = () => {
-    navigate("/checkout");  // Navigate to the Checkout page
-  };
+  const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-4">Shopping Cart</h1>
+    <div className="p-6">
+      <h2 className="text-2xl font-semibold mb-4">Your Cart</h2>
+
+      {/* If the cart is empty */}
       {cart.length === 0 ? (
-        <p className="text-lg">Your cart is empty!</p>
+        <p className="text-gray-700">Your cart is empty</p>
       ) : (
-        <div className="space-y-6">
-          {cart.map((item) => (
-            <div key={item.id} className="flex items-center border-b pb-4 mb-4">
-              <img
-                src={item.image}
-                alt={item.name}
-                className="w-32 h-32 object-cover rounded-lg mr-4"
-              />
-              <div className="flex-1">
-                <h2 className="text-xl font-semibold">{item.name}</h2>
-                <p className="text-lg text-gray-500">
-                  ${item.price.toFixed(2)} x {item.quantity}
-                </p>
-              </div>
-              <button
-                onClick={() => removeFromCart(item.id)}
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-              >
-                Remove
-              </button>
-            </div>
-          ))}
-          
-          <div className="flex justify-between items-center border-t pt-4">
-            <p className="text-xl font-semibold">Total:</p>
-            <p className="text-xl font-bold text-red-500">
-              ${cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2)}
-            </p>
+        <>
+          <ul className="space-y-4">
+            {cart.map((item) => (
+              <li key={item.id} className="flex justify-between items-center p-4 border-b">
+                {/* Product Image */}
+                <div className="flex items-center space-x-4">
+                  {/* Check if item.image exists and render it */}
+                  {item.image && (
+                    <img
+                      src={item.image}  // Use the image URL stored in the `image` field
+                      alt={item.name}
+                      className="w-16 h-16 object-cover rounded"
+                    />
+                  )}
+                  <div>
+                    <span className="font-semibold">{item.name}</span> - ${item.price} x {item.quantity}
+                  </div>
+                </div>
+                
+                {/* Remove Button */}
+                <button
+                  onClick={() => removeFromCart(item.id)}
+                  className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                >
+                  Remove
+                </button>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-4 text-right">
+            <span className="text-xl font-semibold">Total: ${totalPrice.toFixed(2)}</span>
           </div>
 
-          <div className="mt-6 flex justify-between">
-            <button
-              className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400"
-              onClick={() => window.history.back()}
-            >
-              Continue Shopping
-            </button>
-            <button
-              className="bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-600"
-              onClick={proceedToCheckout}  // Navigate to the Checkout page
-            >
-              Proceed to Checkout
-            </button>
+          {/* Proceed to checkout button */}
+          <div className="mt-6">
+            <Link to="/checkout">
+              <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                Proceed to Checkout
+              </button>
+            </Link>
           </div>
-        </div>
+        </>
       )}
     </div>
   );

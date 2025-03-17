@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import { useStore } from "./store/store";
 import Shop from "./Pages/Shop";
 import Cart from "./Pages/Cart";
 import ProductDetails from "./Pages/ProductDetails";
@@ -7,73 +7,57 @@ import Checkout from "./Pages/Checkout";
 import OrderConfirmation from "./Pages/OrderConfirmation";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import Sidebar from "./components/Sidebar";
-import Home from "./Pages/Home"; // Import Home component
-
-type CartItem = {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-  image: string;
-};
-
-type Product = {
-  id: number;
-  name: string;
-  price: number;
-  originalPrice: number;
-  description: string;
-  image: string;
-};
+import Home from "./Pages/Home";
+import About from "./Pages/About";
+import PrivacyPolicy from "./Pages/PrivacyPolicy"; // Import PrivacyPolicy
+import TermsAndConditions from "./Pages/TermsAndConditions"; // Import TermsAndConditions
+import Contact from "./Pages/Contact"; // Import Contact
 
 function App() {
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const { cart, products, addToCart, removeFromCart } = useStore();
 
-  const addToCart = (product: Product) => {
-    setCart((prevCart) => {
-      const existingItem = prevCart.find((item) => item.id === product.id);
-      if (existingItem) {
-        return prevCart.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      }
-      return [...prevCart, { ...product, quantity: 1 }];
-    });
-  };
+  const currentPage = window.location.pathname.split("/")[1] || "home"; // Fallback to "home"
 
-  const removeFromCart = (id: number) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== id));
+  const renderHeader = (currentPage: string) => {
+    switch (currentPage) {
+      case "shop":
+        return <h1 className="text-3xl font-semibold">Shop</h1>;
+      case "about":
+        return <h1 className="text-3xl font-semibold">About Us</h1>;
+      case "cart":
+        return <h1 className="text-3xl font-semibold">Your Cart</h1>;
+      case "checkout":
+        return <h1 className="text-3xl font-semibold">Checkout</h1>;
+      case "product":
+        return <h1 className="text-3xl font-semibold">Product Details</h1>;
+      default:
+        return <h1 className="text-3xl font-semibold">Welcome</h1>;
+    }
   };
 
   return (
     <Router>
       <div className="min-h-screen flex flex-col">
-        {/* Navbar */}
-        <Navbar />
+        <Navbar cart={cart} />
+        
+        <div className="flex flex-1 flex-col items-center p-4 overflow-auto">
+          {/* Dynamic Header for each page */}
+          {renderHeader(currentPage)}
 
-        <div className="flex flex-1">
-          {/* Sidebar */}
-          <div className="w-64 bg-gray-100 p-4">
-            <Sidebar />
-          </div>
-
-          {/* Main Content */}
-          <main className="flex-1 p-4">
-            <Routes>
-              <Route path="/" element={<Home />} /> {/* Home Route */}
-              <Route path="/shop" element={<Shop addToCart={addToCart} />} />
-              <Route path="/cart" element={<Cart cart={cart} removeFromCart={removeFromCart} />} />
-              <Route path="/product/:id" element={<ProductDetails addToCart={addToCart} />} />
-              <Route path="/checkout" element={<Checkout cart={cart} setCart={setCart} />} />
-              <Route path="/order-confirmation" element={<OrderConfirmation />} />
-            </Routes>
-          </main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/shop" element={<Shop products={products} addToCart={addToCart} />} />
+            <Route path="/cart" element={<Cart cart={cart} removeFromCart={removeFromCart} />} />
+            <Route path="/product/:id" element={<ProductDetails addToCart={addToCart} />} />
+            <Route path="/checkout" element={<Checkout cart={cart} />} />
+            <Route path="/order-confirmation" element={<OrderConfirmation />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+            <Route path="/contact" element={<Contact />} />
+          </Routes>
         </div>
 
-        {/* Footer */}
         <Footer />
       </div>
     </Router>

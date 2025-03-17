@@ -1,5 +1,3 @@
-// Home.tsx
-    
 const Home = () => {
   return (
     <div className="p-6">

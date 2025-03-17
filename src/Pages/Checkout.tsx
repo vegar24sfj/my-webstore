@@ -1,88 +1,45 @@
-import React from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-
-type CartItem = {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-  image: string;
-};
+import { CartItem } from '../types/types';
+import { useNavigate } from 'react-router-dom';
 
 type CheckoutProps = {
-  cart: CartItem[]; // Cart items passed to Checkout
-  setCart: React.Dispatch<React.SetStateAction<CartItem[]>>; // Function to reset cart after checkout
+  cart: CartItem[]; // Ensure that the prop is typed correctly
 };
 
-export function Checkout({ cart, setCart }: CheckoutProps) {
-  const navigate = useNavigate();
+const Checkout = ({ cart }: CheckoutProps) => {
+  const navigate = useNavigate(); // This hook will help navigate the user to the OrderConfirmation page
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    setCart([]); // Clear cart after checkout
-    navigate("/order-confirmation"); // Navigate to order confirmation page
+  const handlePlaceOrder = () => {
+    // Redirect the user to the order confirmation page
+    navigate('/order-confirmation');
   };
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">Checkout</h1>
-      {cart.length === 0 ? (
-        <p>
-          Your cart is empty.{" "}
-          <Link to="/shop" className="text-blue-500">
-            Continue Shopping
-          </Link>
-        </p>
-      ) : (
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          {/* Full Name Input */}
-          <div>
-            <label className="block text-sm font-medium">Full Name</label>
-            <input
-              type="text"
-              className="w-full border p-2 rounded"
-              required
-              placeholder="Enter your full name"
-            />
-          </div>
-
-          {/* Address Input */}
-          <div>
-            <label className="block text-sm font-medium">Address</label>
-            <input
-              type="text"
-              className="w-full border p-2 rounded"
-              required
-              placeholder="Enter your address"
-            />
-          </div>
-
-          {/* Credit Card Number Input */}
-          <div>
-            <label className="block text-sm font-medium">Credit Card Number</label>
-            <input
-              type="text"
-              className="w-full border p-2 rounded"
-              required
-              pattern="(?:\d{4}[- ]){3}\d{4}|\d{16}"
-              placeholder="Enter your credit card number"
-            />
-            <small className="text-gray-500">
-              Enter a valid credit card number (16 digits).
-            </small>
-          </div>
-
-          {/* Submit Button */}
-          <button
-            type="submit"
-            className="bg-green-500 text-white px-4 py-2 rounded"
-          >
-            Place Order
-          </button>
-        </form>
-      )}
+      <h1 className="text-3xl font-semibold text-center mb-6">Checkout</h1>
+      <div className="mb-6">
+        {cart.length === 0 ? (
+          <p className="text-center text-lg text-gray-600">Your cart is empty</p>
+        ) : (
+          <ul className="space-y-4">
+            {cart.map((item) => (
+              <li key={item.id} className="flex justify-between text-lg text-gray-800">
+                <span>{item.name}</span>
+                <span>${item.price} x {item.quantity}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+      <div className="flex justify-center">
+        <button
+          onClick={handlePlaceOrder}
+          className="bg-blue-500 text-white px-6 py-3 rounded-lg text-xl hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+        >
+          Place Order
+        </button>
+      </div>
     </div>
   );
-}
+};
 
 export default Checkout;
