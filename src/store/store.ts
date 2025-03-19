@@ -1,55 +1,51 @@
-import { create } from "zustand";
-import { CartItem, Product, Store } from "../types/types";
+import { create } from 'zustand';
+import { Product, CartItem, Store } from '../types/types';
 
 export const useStore = create<Store>((set) => ({
   cart: [],
   selectedCategory: null,
-  products: [
-    {
-      id: '1',
-      name: 'Product 1',
-      category: 'electronics',
-      price: 99.99,
-      image: '/images/1.png',
-    },
-    {
-      id: '2',
-      name: 'Product 2',
-      category: 'clothing',
-      price: 49.99,
-      image: '/images/2.jpg',
-    },
-    {
-      id: '3',
-      name: 'Product 3',
-      category: 'home',
-      price: 19.99,
-      image: '/images/3.jpg',
-    },
-    // Add more products here
+  originalProducts: [
+    { id: '1', name: 'Laptop', category: 'electronics', price: 999, image: '/images/laptop.png' },
+    { id: '2', name: 'T-Shirt', category: 'clothing', price: 29, image: '/images/tshirt.png' },
+    { id: '3', name: 'Sofa', category: 'home', price: 499, image: '/images/sofa.png' },
   ],
-  addToCart: (product: Product) =>
-    set((state: Store) => {
+  products: [], // Initially empty, will be set to originalProducts
+
+  addToCart: (product: Product, quantity: number) =>
+    set((state) => {
       const existingItem = state.cart.find((item) => item.id === product.id);
       if (existingItem) {
+        // If item already in cart, update quantity
         return {
           cart: state.cart.map((item) =>
             item.id === product.id
-              ? { ...item, quantity: item.quantity + 1 }
+              ? { ...item, quantity: item.quantity + quantity }
               : item
           ),
         };
+      } else {
+        // If item not in cart, add it
+        return {
+          cart: [...state.cart, { ...product, quantity }],
+        };
       }
-      return {
-        cart: [...state.cart, { ...product, quantity: 1 }],
-      };
     }),
+
   removeFromCart: (id: string) =>
-    set((state: Store) => ({
-      cart: state.cart.filter((item) => item.id !== id),
-    })),
-  setSelectedCategory: (category: string | null) =>
-    set({ selectedCategory: category }),
+    set((state) => ({ cart: state.cart.filter((item) => item.id !== id) })),
+
   setCart: (cart: CartItem[]) => set({ cart }),
+
+  setSelectedCategory: (category: string | null) =>
+    set((state) => {
+      const filteredProducts = category
+        ? state.originalProducts.filter((product) => product.category === category)
+        : state.originalProducts;
+      return { selectedCategory: category, products: filteredProducts };
+    }),
+
   setProducts: (products: Product[]) => set({ products }),
+
+  resetFilters: () =>
+    set((state) => ({ selectedCategory: null, products: state.originalProducts })),
 }));

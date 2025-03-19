@@ -1,12 +1,14 @@
+import { useLocation, useNavigate } from 'react-router-dom'; // Import useNavigate and useLocation
 import { CartItem } from '../types/types';
-import { useNavigate } from 'react-router-dom';
 
 type CheckoutProps = {
   cart: CartItem[]; // Ensure that the prop is typed correctly
 };
 
 const Checkout = ({ cart }: CheckoutProps) => {
-  const navigate = useNavigate(); // This hook will help navigate the user to the OrderConfirmation page
+  const location = useLocation();
+  const navigate = useNavigate(); // Declare the navigate function from useNavigate
+  const { product, quantity } = location.state || {}; // Destructure state passed from ProductDetails
 
   const handlePlaceOrder = () => {
     // Redirect the user to the order confirmation page
@@ -27,6 +29,12 @@ const Checkout = ({ cart }: CheckoutProps) => {
                 <span>${item.price} x {item.quantity}</span>
               </li>
             ))}
+            {product && (
+              <li className="flex justify-between text-lg text-gray-800">
+                <span>{product.name}</span>
+                <span>${product.price} x {quantity}</span>
+              </li>
+            )}
           </ul>
         )}
       </div>
@@ -43,3 +51,4 @@ const Checkout = ({ cart }: CheckoutProps) => {
 };
 
 export default Checkout;
+  
