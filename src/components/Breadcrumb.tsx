@@ -1,30 +1,32 @@
 import { Link, useLocation } from "react-router-dom";
 
-type BreadcrumbProps = {
-  paths: { name: string; path: string }[];
-};
-
-export function Breadcrumb({ paths }: BreadcrumbProps) {
+export function Breadcrumb() {
   const location = useLocation();
+  const paths = location.pathname.split("/").filter(Boolean); // Split and remove empty strings
 
   return (
     <div className="bg-gray-50 p-4 shadow-md">
       <nav aria-label="Breadcrumb">
         <ol className="flex justify-center text-gray-700 space-x-2">
-          {paths.map((item, index) => {
-            const isActive = location.pathname === item.path; // Check if the breadcrumb is for the current page
+          <li>
+            <Link to="/" className="text-blue-500 hover:text-blue-700">
+              Home
+            </Link>
+          </li>
+          {paths.map((path, index) => {
+            const to = `/${paths.slice(0, index + 1).join("/")}`;
+            const isLast = index === paths.length - 1;
 
             return (
-              <li key={item.path} className="flex items-center">
-                {index > 0 && <span className="mx-2">/</span>}
-                <Link
-                  to={item.path}
-                  className={`${
-                    isActive ? "text-gray-500" : "text-blue-500"
-                  } hover:text-blue-700`}
-                >
-                  {item.name}
-                </Link>
+              <li key={to} className="flex items-center">
+                <span className="mx-2">/</span>
+                {isLast ? (
+                  <span className="text-gray-500">{path}</span>
+                ) : (
+                  <Link to={to} className="text-blue-500 hover:text-blue-700">
+                    {path}
+                  </Link>
+                )}
               </li>
             );
           })}

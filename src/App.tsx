@@ -12,38 +12,20 @@ import About from "./Pages/About";
 import PrivacyPolicy from "./Pages/PrivacyPolicy"; // Import PrivacyPolicy
 import TermsAndConditions from "./Pages/TermsAndConditions"; // Import TermsAndConditions
 import Contact from "./Pages/Contact"; // Import Contact
+import Breadcrumb from "./components/Breadcrumb"; // Import Breadcrumb
 
 function App() {
   const { cart, products, addToCart, removeFromCart } = useStore();
-
-  const currentPage = window.location.pathname.split("/")[1] || "home"; // Fallback to "home"
-
-  const renderHeader = (currentPage: string) => {
-    switch (currentPage) {
-      case "shop":
-        return <h1 className="text-3xl font-semibold">Shop</h1>;
-      case "about":
-        return <h1 className="text-3xl font-semibold">About Us</h1>;
-      case "cart":
-        return <h1 className="text-3xl font-semibold">Your Cart</h1>;
-      case "checkout":
-        return <h1 className="text-3xl font-semibold">Checkout</h1>;
-      case "product":
-        return <h1 className="text-3xl font-semibold">Product Details</h1>;
-      default:
-        return <h1 className="text-3xl font-semibold">Welcome</h1>;
-    }
-  };
 
   return (
     <Router>
       <div className="min-h-screen flex flex-col">
         <Navbar cart={cart} />
         
-        <div className="flex flex-1 flex-col items-center p-4 overflow-auto">
-          {/* Dynamic Header for each page */}
-          {renderHeader(currentPage)}
+        {/* Breadcrumb Navigation */}
+        <Breadcrumb />
 
+        <div className="flex flex-1 flex-col items-center p-4 overflow-auto">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/shop" element={<Shop products={products} addToCart={addToCart} />} />
