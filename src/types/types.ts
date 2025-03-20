@@ -7,7 +7,6 @@ export interface Product {
   description?: string; // Add this line to make description optional
 }
 
-
 export interface CartItem {
   id: string;
   name: string;

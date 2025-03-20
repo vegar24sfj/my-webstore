@@ -15,15 +15,13 @@ const Navbar = ({ cart }: NavbarProps) => {
         {/* Left Section with Logo */}
         <div className="flex items-center space-x-10">
           <Link to="/" className="flex items-center">
-            <img
-              src="/images/logo.jpeg" 
-              alt="Logo"
-              className="h-20 w-auto"
-            />
+            <img src="/images/logo.jpeg" alt="Logo" className="h-20 w-auto" />
           </Link>
-          
+
           {/* Navigation Links */}
-          <Link to="/" className="hover:text-gray-200"> {/* Home Link */}
+          <Link to="/" className="hover:text-gray-200">
+            {" "}
+            {/* Home Link */}
             Home
           </Link>
           <Link to="/shop" className="hover:text-gray-200">

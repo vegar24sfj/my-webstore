@@ -26,14 +26,26 @@ function App() {
         <div className="flex flex-1 flex-col items-center p-4 overflow-auto">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/shop" element={<Shop products={products} addToCart={addToCart} />} />
-            <Route path="/cart" element={<Cart cart={cart} removeFromCart={removeFromCart} />} />
-            <Route path="/product/:id" element={<ProductDetails addToCart={addToCart} />} />
+            <Route
+              path="/shop"
+              element={<Shop products={products} addToCart={addToCart} />}
+            />
+            <Route
+              path="/cart"
+              element={<Cart cart={cart} removeFromCart={removeFromCart} />}
+            />
+            <Route
+              path="/product/:id"
+              element={<ProductDetails addToCart={addToCart} />}
+            />
             <Route path="/checkout" element={<Checkout cart={cart} />} />
             <Route path="/order-confirmation" element={<OrderConfirmation />} />
             <Route path="/about" element={<About />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+            <Route
+              path="/terms-and-conditions"
+              element={<TermsAndConditions />}
+            />
             <Route path="/contact" element={<Contact />} />
           </Routes>
         </div>

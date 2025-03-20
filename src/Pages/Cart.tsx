@@ -8,7 +8,10 @@ type CartProps = {
 
 const Cart = ({ cart, removeFromCart }: CartProps) => {
   // Calculate total price safely
-  const totalPrice = Math.round(cart.reduce((total, item) => total + item.price * item.quantity, 0) * 100) / 100;
+  const totalPrice =
+    Math.round(
+      cart.reduce((total, item) => total + item.price * item.quantity, 0) * 100
+    ) / 100;
 
   return (
     <div className="p-6">
@@ -21,7 +24,10 @@ const Cart = ({ cart, removeFromCart }: CartProps) => {
         <>
           <ul className="space-y-4">
             {cart.map((item) => (
-              <li key={item.id} className="flex justify-between items-center p-4 border-b">
+              <li
+                key={item.id}
+                className="flex justify-between items-center p-4 border-b"
+              >
                 <div className="flex items-center space-x-4">
                   {/* Display product image if available */}
                   {item.image && (
@@ -32,10 +38,11 @@ const Cart = ({ cart, removeFromCart }: CartProps) => {
                     />
                   )}
                   <div>
-                    <span className="font-semibold">{item.name}</span> - ${item.price} x {item.quantity}
+                    <span className="font-semibold">{item.name}</span> - $
+                    {item.price} x {item.quantity}
                   </div>
                 </div>
-                
+
                 {/* Remove from Cart Button */}
                 <button
                   onClick={() => removeFromCart(item.id)}
@@ -49,7 +56,9 @@ const Cart = ({ cart, removeFromCart }: CartProps) => {
 
           {/* Total Price Display */}
           <div className="mt-4 text-right">
-            <span className="text-xl font-semibold">Total: ${totalPrice.toFixed(2)}</span>
+            <span className="text-xl font-semibold">
+              Total: ${totalPrice.toFixed(2)}
+            </span>
           </div>
 
           {/* Proceed to Checkout */}

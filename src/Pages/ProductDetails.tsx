@@ -16,11 +16,13 @@ const ProductDetails = ({ addToCart }: ProductDetailsProps) => {
   const [rating, setRating] = useState(5);
   const navigate = useNavigate();
 
-  if (!id) return <div className="text-center text-red-500">Product not found!</div>;
+  if (!id)
+    return <div className="text-center text-red-500">Product not found!</div>;
 
   const product = products.find((product) => product.id === id);
 
-  if (!product) return <div className="text-center text-red-500">Product not found!</div>;
+  if (!product)
+    return <div className="text-center text-red-500">Product not found!</div>;
 
   const handleBuyNow = () => {
     navigate("/checkout", { state: { product, quantity } });
@@ -31,7 +33,9 @@ const ProductDetails = ({ addToCart }: ProductDetailsProps) => {
       <div className="flex flex-wrap w-full max-w-7xl p-8 gap-8">
         {/* Left Side: Description and Details */}
         <div className="flex-1 flex flex-col space-y-6">
-          <h1 className="text-3xl font-semibold text-gray-900">{product.name}</h1>
+          <h1 className="text-3xl font-semibold text-gray-900">
+            {product.name}
+          </h1>
           <p className="text-lg text-gray-600">{product.category}</p>
           <p className="text-sm text-gray-500">Product Code: #{product.id}</p>
           <p className="text-xl font-medium text-teal-600">${product.price}</p>
@@ -67,7 +71,9 @@ const ProductDetails = ({ addToCart }: ProductDetailsProps) => {
           <div className="mt-6">
             <h3 className="text-lg font-semibold">Description:</h3>
             <p className="text-gray-700">
-              {product.description ? product.description : "No description available."}
+              {product.description
+                ? product.description
+                : "No description available."}
             </p>
           </div>
 

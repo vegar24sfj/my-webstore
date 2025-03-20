@@ -10,7 +10,12 @@ interface ShopProps {
 }
 
 const Shop: React.FC<ShopProps> = ({ products, addToCart }) => {
-  const { selectedCategory, setSelectedCategory, setProducts, originalProducts } = useStore();
+  const {
+    selectedCategory,
+    setSelectedCategory,
+    setProducts,
+    originalProducts,
+  } = useStore();
 
   // Initialize products with the full list of original products when the component is mounted
   useEffect(() => {

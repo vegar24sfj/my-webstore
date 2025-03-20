@@ -1,5 +1,5 @@
-import { useStore } from '../store/store';
-import { useNavigate } from 'react-router-dom';
+import { useStore } from "../store/store";
+import { useNavigate } from "react-router-dom";
 
 export function OrderConfirmation() {
   const { setCart } = useStore(); // Get the setCart action from Zustand store
@@ -7,14 +7,17 @@ export function OrderConfirmation() {
 
   const handleContinueShopping = () => {
     setCart([]); // Clear the cart after order confirmation
-    navigate('/'); // Redirect to the homepage or you could navigate to another page if you prefer
+    navigate("/"); // Redirect to the homepage or you could navigate to another page if you prefer
   };
 
   return (
     <div className="max-w-4xl mx-auto p-6 text-center">
-      <h1 className="text-4xl font-semibold text-green-600 mb-4">Order Confirmed!</h1>
+      <h1 className="text-4xl font-semibold text-green-600 mb-4">
+        Order Confirmed!
+      </h1>
       <p className="text-lg text-gray-700 mb-6">
-        Thank you for your purchase. Your order has been successfully placed. We appreciate your business!
+        Thank you for your purchase. Your order has been successfully placed. We
+        appreciate your business!
       </p>
       <div>
         <button

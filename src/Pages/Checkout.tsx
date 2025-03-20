@@ -1,5 +1,5 @@
-import { useLocation, useNavigate } from 'react-router-dom'; // Import useNavigate and useLocation
-import { CartItem } from '../types/types';
+import { useLocation, useNavigate } from "react-router-dom"; // Import useNavigate and useLocation
+import { CartItem } from "../types/types";
 
 type CheckoutProps = {
   cart: CartItem[]; // Ensure that the prop is typed correctly
@@ -12,7 +12,7 @@ const Checkout = ({ cart }: CheckoutProps) => {
 
   const handlePlaceOrder = () => {
     // Redirect the user to the order confirmation page
-    navigate('/order-confirmation');
+    navigate("/order-confirmation");
   };
 
   return (
@@ -20,19 +20,28 @@ const Checkout = ({ cart }: CheckoutProps) => {
       <h1 className="text-3xl font-semibold text-center mb-6">Checkout</h1>
       <div className="mb-6">
         {cart.length === 0 ? (
-          <p className="text-center text-lg text-gray-600">Your cart is empty</p>
+          <p className="text-center text-lg text-gray-600">
+            Your cart is empty
+          </p>
         ) : (
           <ul className="space-y-4">
             {cart.map((item) => (
-              <li key={item.id} className="flex justify-between text-lg text-gray-800">
+              <li
+                key={item.id}
+                className="flex justify-between text-lg text-gray-800"
+              >
                 <span>{item.name}</span>
-                <span>${item.price} x {item.quantity}</span>
+                <span>
+                  ${item.price} x {item.quantity}
+                </span>
               </li>
             ))}
             {product && (
               <li className="flex justify-between text-lg text-gray-800">
                 <span>{product.name}</span>
-                <span>${product.price} x {quantity}</span>
+                <span>
+                  ${product.price} x {quantity}
+                </span>
               </li>
             )}
           </ul>
@@ -51,4 +60,3 @@ const Checkout = ({ cart }: CheckoutProps) => {
 };
 
 export default Checkout;
-  

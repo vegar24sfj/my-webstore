@@ -7,9 +7,15 @@ export function Footer() {
         {/* Left Side with Logo and Paragraph */}
         <div className="flex flex-col items-start">
           {/* Updated image path */}
-          <img src="/images/logo.jpeg" alt="Logo" className="h-20 w-auto mb-4" />
+          <img
+            src="/images/logo.jpeg"
+            alt="Logo"
+            className="h-20 w-auto mb-4"
+          />
 
-          <p className="text-gray-400 text-sm max-w-xs"> {/* Apply max-w-xs to restrict width */}
+          <p className="text-gray-400 text-sm max-w-xs">
+            {" "}
+            {/* Apply max-w-xs to restrict width */}
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae
             eros nec leo consectetur convallis. Integer et erat in dui
             sollicitudin mollis.
