@@ -46,7 +46,7 @@ const Navbar = ({ cart }: NavbarProps) => {
         {/* Right Section with Cart */}
         <div className="flex items-center space-x-2">
           <Link to="/cart" className="hover:text-gray-200 flex items-center">
-            <FaShoppingCart className="text-gray-950 text-xl" />
+            <FaShoppingCart className="text-gray-950 text-2xl hover:text-blue-500" />
             {totalQuantity > 0 && (
               <span className="ml-2">{totalQuantity}</span> // Display total quantity
             )}

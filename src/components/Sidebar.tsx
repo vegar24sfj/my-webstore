@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FaMinus } from "react-icons/fa";
 
 type SidebarProps = {
   onCategoryChange: (category: string | null) => void;
@@ -36,7 +37,8 @@ export function Sidebar({
   return (
     <div className="w-64 bg-white p-4 mt-4"> {/* Remove 'fixed' and added 'mt-4' to ensure it appears below the navbar */}
       {/* Categories */}
-      <h2 className="text-xl font-semibold mb-4">Categories</h2>
+      <h2 className="text-xl font-semibold">Categories</h2>
+        <FaMinus className="text-gray-300 flex-1 mb-4" /> {/* Horizontal line */}
       <ul className="space-y-2">
         <li
           className={`text-gray-700 hover:text-blue-500 cursor-pointer ${
@@ -60,7 +62,8 @@ export function Sidebar({
       </ul>
 
       {/* Sort Products */}
-      <h2 className="text-xl font-semibold mt-6 mb-4">Sort Products</h2>
+      <h2 className="text-xl font-semibold mt-6">Sort Products</h2>
+      <FaMinus className="text-gray-300 flex-1 mb-4" /> {/* Horizontal line */}
       <ul className="space-y-2">
         <li
           className="text-gray-700 hover:text-blue-500 cursor-pointer"
@@ -77,7 +80,8 @@ export function Sidebar({
       </ul>
 
       {/* Price Filter */}
-      <h2 className="text-xl font-semibold mt-6 mb-4">Price</h2>
+      <h2 className="text-xl font-semibold mt-6">Price</h2>
+      <FaMinus className="text-gray-300 flex-1 mb-4" /> {/* Horizontal line */}
       <div className="space-y-2">
         <div className="flex items-center">
           <label htmlFor="minPrice" className="mr-2">

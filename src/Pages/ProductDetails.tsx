@@ -1,8 +1,7 @@
-// ProductDetails.tsx
-import { useState } from "react"; 
-import { useParams, useNavigate } from "react-router-dom"; 
-import { Product } from "../types/types"; 
-import { useStore } from "../store/store"; 
+import { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { Product } from "../types/types";
+import { useStore } from "../store/store";
 import { FaStar, FaRegStar } from "react-icons/fa";
 
 type ProductDetailsProps = {
@@ -28,18 +27,10 @@ const ProductDetails = ({ addToCart }: ProductDetailsProps) => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 py-6 px-4">
-      <div className="flex flex-wrap bg-white shadow-lg rounded-lg max-w-6xl w-full p-8 gap-8">
-        <div className="flex-1 max-w-sm">
-          <img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-auto rounded-lg object-cover"
-            style={{ maxHeight: "400px", objectFit: "contain" }}
-          />
-        </div>
-
-        <div className="flex-2 flex flex-col items-start space-y-6 w-full md:w-2/3">
+    <div className="flex justify-center items-center min-h-screen py-6 px-4 bg-white">
+      <div className="flex flex-wrap w-full max-w-7xl p-8 gap-8">
+        {/* Left Side: Description and Details */}
+        <div className="flex-1 flex flex-col space-y-6">
           <h1 className="text-3xl font-semibold text-gray-900">{product.name}</h1>
           <p className="text-lg text-gray-600">{product.category}</p>
           <p className="text-sm text-gray-500">Product Code: #{product.id}</p>
@@ -53,7 +44,7 @@ const ProductDetails = ({ addToCart }: ProductDetailsProps) => {
               min="1"
               value={quantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
-              className="w-16 p-2 border rounded"
+              className="w-16 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
             />
           </div>
 
@@ -72,14 +63,16 @@ const ProductDetails = ({ addToCart }: ProductDetailsProps) => {
             </button>
           </div>
 
-          <div>
+          {/* Description */}
+          <div className="mt-6">
             <h3 className="text-lg font-semibold">Description:</h3>
             <p className="text-gray-700">
               {product.description ? product.description : "No description available."}
             </p>
           </div>
 
-          <div className="flex items-center">
+          {/* Rating Section */}
+          <div className="flex items-center mt-6">
             <span className="font-semibold mr-2">Rating:</span>
             {[...Array(5)].map((_, i) => (
               <button key={i} onClick={() => setRating(i + 1)}>
@@ -93,19 +86,30 @@ const ProductDetails = ({ addToCart }: ProductDetailsProps) => {
             <span className="ml-2 text-gray-600">{rating}/5</span>
           </div>
 
-          <div className="w-full">
+          {/* Review Section */}
+          <div className="w-full mt-6">
             <h3 className="text-lg font-semibold mb-2">Leave a Review</h3>
             <textarea
               value={review}
               onChange={(e) => setReview(e.target.value)}
               placeholder="Write your review..."
-              className="w-full p-2 border rounded resize-none"
+              className="w-full p-2 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
               rows={3}
             ></textarea>
-            <button className="mt-3 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+            <button className="mt-3 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-300">
               Submit Review
             </button>
           </div>
+        </div>
+
+        {/* Right Side: Product Image */}
+        <div className="flex-1 max-w-sm">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-auto rounded-lg object-cover"
+            style={{ maxHeight: "400px", objectFit: "contain" }}
+          />
         </div>
       </div>
     </div>

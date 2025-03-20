@@ -7,9 +7,9 @@ export function Footer() {
         {/* Left Side with Logo and Paragraph */}
         <div className="flex flex-col items-start">
           {/* Updated image path */}
-          <img src="/images/logo.jpeg" alt="Logo" className="h-20 w-auto" />
+          <img src="/images/logo.jpeg" alt="Logo" className="h-20 w-auto mb-4" />
 
-          <p className="text-gray-400 text-sm">
+          <p className="text-gray-400 text-sm max-w-xs"> {/* Apply max-w-xs to restrict width */}
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae
             eros nec leo consectetur convallis. Integer et erat in dui
             sollicitudin mollis.
@@ -77,7 +77,7 @@ export function Footer() {
 
       {/* Footer Bottom Section */}
       <div className="text-center mt-8 text-gray-400 text-sm">
-        <p>&copy; 2025 VEGAR'S STORE - Your Complete Ecommerce Store</p>
+        <p>&copy; 2025 VEGAR'S STORE</p>
       </div>
     </footer>
   );
