@@ -21,21 +21,21 @@ export const useStore = create<Store>((set) => ({
       name: "Laptop",
       category: "electronics",
       price: 999,
-      image: "/images/1.png",
+      imageUrl: "/public/images/1.png", // Changed to imageUrl
     },
     {
       id: "2",
       name: "T-Shirt",
       category: "clothing",
       price: 29,
-      image: "/images/2.jpg",
+      imageUrl: "/images/2.jpg", // Changed to imageUrl
     },
     {
       id: "3",
       name: "Sofa",
       category: "home",
       price: 499,
-      image: "/images/3.jpg",
+      imageUrl: "/images/3.jpg", // Changed to imageUrl
     },
   ],
   products: [], // Initially empty, will be set to originalProducts

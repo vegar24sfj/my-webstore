@@ -1,76 +1,92 @@
+import { useNavigate } from "react-router-dom";
 import { CartItem } from "../types/types";
-import { Link } from "react-router-dom";
 
 type CartProps = {
   cart: CartItem[];
   removeFromCart: (id: string) => void;
+  isCartOpen: boolean;
+  closeCart: () => void;
 };
 
-const Cart = ({ cart, removeFromCart }: CartProps) => {
-  // Calculate total price safely
-  const totalPrice =
-    Math.round(
-      cart.reduce((total, item) => total + item.price * item.quantity, 0) * 100
-    ) / 100;
+const Cart = ({ cart, removeFromCart, isCartOpen, closeCart }: CartProps) => {
+  const navigate = useNavigate(); // useNavigate hook for navigation
+
+  const handleRemove = (id: string) => {
+    removeFromCart(id);
+  };
+
+  const handlePlaceOrder = () => {
+    navigate("/checkout"); // Navigate to the Checkout page
+  };
+
+  const totalAmount = cart.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
+
+  if (!isCartOpen) return null;
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-semibold mb-4">Your Cart</h2>
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+      <div className="bg-white p-6 rounded-lg w-96 max-h-[80vh] overflow-y-auto">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-semibold">Your Cart</h2>
+          <button
+            onClick={closeCart}
+            className="text-gray-500 hover:text-gray-700 text-xl"
+          >
+            &times; {/* Close button */}
+          </button>
+        </div>
 
-      {/* Empty Cart Message */}
-      {cart.length === 0 ? (
-        <p className="text-gray-700">Your cart is empty.</p>
-      ) : (
-        <>
-          <ul className="space-y-4">
-            {cart.map((item) => (
-              <li
-                key={item.id}
-                className="flex justify-between items-center p-4 border-b"
-              >
-                <div className="flex items-center space-x-4">
-                  {/* Display product image if available */}
-                  {item.image && (
+        {cart.length === 0 ? (
+          <p className="text-center text-gray-600">Your cart is empty.</p>
+        ) : (
+          <div>
+            {/* Cart Items */}
+            <ul className="space-y-4">
+              {cart.map((item) => (
+                <li key={item.id} className="flex justify-between items-center">
+                  <div className="flex items-center space-x-4">
                     <img
-                      src={item.image}
+                      src={item.imageUrl || "/images/default.png"} // Fallback image
                       alt={item.name}
                       className="w-16 h-16 object-cover rounded"
                     />
-                  )}
-                  <div>
-                    <span className="font-semibold">{item.name}</span> - $
-                    {item.price} x {item.quantity}
+                    <div>
+                      <h3 className="font-semibold">{item.name}</h3>
+                      <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
+                      <p className="text-sm text-gray-600">Price: ${item.price}</p>
+                    </div>
                   </div>
-                </div>
+                  <button
+                    onClick={() => handleRemove(item.id)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    Remove
+                  </button>
+                </li>
+              ))}
+            </ul>
 
-                {/* Remove from Cart Button */}
-                <button
-                  onClick={() => removeFromCart(item.id)}
-                  className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
-                >
-                  Remove
-                </button>
-              </li>
-            ))}
-          </ul>
+            {/* Cart Total */}
+            <div className="mt-4 flex justify-between items-center font-semibold">
+              <p>Total:</p>
+              <p>${totalAmount.toFixed(2)}</p>
+            </div>
 
-          {/* Total Price Display */}
-          <div className="mt-4 text-right">
-            <span className="text-xl font-semibold">
-              Total: ${totalPrice.toFixed(2)}
-            </span>
-          </div>
-
-          {/* Proceed to Checkout */}
-          <div className="mt-6 text-center">
-            <Link to="/checkout">
-              <button className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition">
-                Proceed to Checkout
+            {/* Checkout Button */}
+            <div className="mt-6 flex justify-center">
+              <button
+                onClick={handlePlaceOrder} // Navigate to checkout when clicked
+                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+              >
+                Checkout
               </button>
-            </Link>
+            </div>
           </div>
-        </>
-      )}
+        )}
+      </div>
     </div>
   );
 };

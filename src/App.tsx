@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useState } from "react";
 import { useStore } from "./store/store";
 import Shop from "./Pages/Shop";
 import Cart from "./Pages/Cart";
@@ -16,12 +17,20 @@ import Breadcrumb from "./components/Breadcrumb";
 
 function App() {
   const { cart, products, addToCart, removeFromCart } = useStore();
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
+  const openCart = () => {
+    setIsCartOpen(true);
+  };
+
+  const closeCart = () => {
+    setIsCartOpen(false);
+  };
 
   return (
     <Router>
       <div className="min-h-screen flex flex-col">
-        <Navbar cart={cart} />
-        {/* Breadcrumb Navigation */}
+        <Navbar cart={cart} openCart={openCart} />
         <Breadcrumb />
         <div className="flex flex-1 flex-col items-center p-4 overflow-auto">
           <Routes>
@@ -32,7 +41,14 @@ function App() {
             />
             <Route
               path="/cart"
-              element={<Cart cart={cart} removeFromCart={removeFromCart} />}
+              element={
+                <Cart
+                  cart={cart}
+                  removeFromCart={removeFromCart}
+                  isCartOpen={isCartOpen}
+                  closeCart={closeCart}
+                />
+              }
             />
             <Route
               path="/product/:id"

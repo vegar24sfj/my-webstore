@@ -73,7 +73,7 @@ const Shop: React.FC<ShopProps> = ({ products, addToCart }) => {
               >
                 <Link to={`/product/${product.id}`}>
                   <img
-                    src={product.image}
+                    src={product.imageUrl} // Use imageUrl property instead of image
                     alt={product.name}
                     className="w-full h-48 object-cover mb-4"
                   />
