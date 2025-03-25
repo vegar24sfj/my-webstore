@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { CartItem } from "../types/types";
 
 type CartProps = {
@@ -9,30 +8,20 @@ type CartProps = {
 };
 
 const Cart = ({ cart, removeFromCart, isCartOpen, closeCart }: CartProps) => {
-  const navigate = useNavigate(); // useNavigate hook for navigation
-
-  const handleRemove = (id: string) => {
-    removeFromCart(id);
-  };
-
-  const handlePlaceOrder = () => {
-    navigate("/checkout"); // Navigate to the Checkout page
-  };
-
   const totalAmount = cart.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
 
-  if (!isCartOpen) return null;
+  if (!isCartOpen) return null;  // Only render if cart is open
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end">
       <div className="bg-white p-6 rounded-lg w-96 max-h-[80vh] overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Your Cart</h2>
           <button
-            onClick={closeCart}
+            onClick={closeCart} // Close the cart when clicked
             className="text-gray-500 hover:text-gray-700 text-xl"
           >
             &times; {/* Close button */}
@@ -60,7 +49,7 @@ const Cart = ({ cart, removeFromCart, isCartOpen, closeCart }: CartProps) => {
                     </div>
                   </div>
                   <button
-                    onClick={() => handleRemove(item.id)}
+                    onClick={() => removeFromCart(item.id)}
                     className="text-red-500 hover:text-red-700"
                   >
                     Remove
@@ -78,7 +67,7 @@ const Cart = ({ cart, removeFromCart, isCartOpen, closeCart }: CartProps) => {
             {/* Checkout Button */}
             <div className="mt-6 flex justify-center">
               <button
-                onClick={handlePlaceOrder} // Navigate to checkout when clicked
+                onClick={() => alert("Proceed to checkout")}
                 className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
               >
                 Checkout

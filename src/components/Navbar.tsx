@@ -4,7 +4,7 @@ import { FaShoppingCart } from "react-icons/fa";
 
 type NavbarProps = {
   cart: CartItem[];
-  openCart: () => void;
+  openCart: () => void; // Function to open the cart side panel
 };
 
 const Navbar = ({ cart, openCart }: NavbarProps) => {
@@ -30,14 +30,18 @@ const Navbar = ({ cart, openCart }: NavbarProps) => {
 
         {/* Right Section with Cart */}
         <div className="flex items-center space-x-2 relative">
-          <Link to="/cart" className="hover:text-gray-200 flex items-center" onClick={openCart}>
+          {/* Remove Link and use button or div to trigger openCart */}
+          <button
+            onClick={openCart} // Open cart side panel when clicked
+            className="hover:text-gray-200 flex items-center"
+          >
             <FaShoppingCart className="text-gray-950 text-3xl hover:text-blue-500" />
             {totalQuantity > 0 && (
               <span className="absolute top-[-10px] right-[-10px] bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                 {totalQuantity}
               </span>
             )}
-          </Link>
+          </button>
         </div>
       </div>
     </nav>

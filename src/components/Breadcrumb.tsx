@@ -17,6 +17,9 @@ export function Breadcrumb() {
             const to = `/${paths.slice(0, index + 1).join("/")}`;
             const isLast = index === paths.length - 1;
 
+            // Skip the cart route in the breadcrumb
+            if (path === "cart") return null;
+
             return (
               <li key={to} className="flex items-center">
                 <span className="mx-2">/</span>

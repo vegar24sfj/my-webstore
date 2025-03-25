@@ -1,10 +1,10 @@
-// Example types
 export interface Product {
   id: string;
   name: string;
   category: string;
   price: number;
-  imageUrl: string;  // This is likely the correct property
+  imageUrl: string;
+  description: string; // Add description field
 }
 
 export interface CartItem extends Product {
@@ -13,9 +13,9 @@ export interface CartItem extends Product {
 
 export interface Store {
   cart: CartItem[];
-  selectedCategory: string | null;
-  originalProducts: Product[];
   products: Product[];
+  originalProducts: Product[];
+  selectedCategory: string | null;
   addToCart: (product: Product, quantity: number) => void;
   removeFromCart: (id: string) => void;
   setCart: (cart: CartItem[]) => void;

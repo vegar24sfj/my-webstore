@@ -4,7 +4,6 @@ import HeroBanner from "../components/HeroBanner";
 const Home = () => {
   return (
     <div className="p-0"> {/* Add p-0 here to remove padding in Home */}
-      <HeroBanner />
       <h1 className="text-3xl font-bold mt-6 mb-4">Welcome to Our Store</h1>
       <p className="text-lg">
         Find the best products at amazing prices! Click the button below to
@@ -14,6 +13,7 @@ const Home = () => {
         <Link to="/shop" className="text-blue-500 text-lg font-semibold">
           Start Shopping
         </Link>
+      <HeroBanner />
       </div>
     </div>
   );

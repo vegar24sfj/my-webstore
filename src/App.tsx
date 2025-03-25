@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import { useStore } from "./store/store";
 import Shop from "./Pages/Shop";
-import Cart from "./Pages/Cart";
 import ProductDetails from "./Pages/ProductDetails";
 import Checkout from "./Pages/Checkout";
 import OrderConfirmation from "./Pages/OrderConfirmation";
@@ -14,23 +13,26 @@ import PrivacyPolicy from "./Pages/PrivacyPolicy";
 import TermsAndConditions from "./Pages/TermsAndConditions";
 import Contact from "./Pages/Contact";
 import Breadcrumb from "./components/Breadcrumb";
+import Cart from "./components/Cart"; // Import the Cart component here
 
 function App() {
   const { cart, products, addToCart, removeFromCart } = useStore();
   const [isCartOpen, setIsCartOpen] = useState(false);
 
+  // Function to open the cart (side panel)
   const openCart = () => {
-    setIsCartOpen(true);
+    setIsCartOpen(true); // Open the cart
   };
 
+  // Function to close the cart (side panel)
   const closeCart = () => {
-    setIsCartOpen(false);
+    setIsCartOpen(false); // Close the cart
   };
 
   return (
     <Router>
       <div className="min-h-screen flex flex-col">
-        <Navbar cart={cart} openCart={openCart} />
+        <Navbar cart={cart} openCart={openCart} /> {/* Pass openCart to Navbar */}
         <Breadcrumb />
         <div className="flex flex-1 flex-col items-center p-4 overflow-auto">
           <Routes>
@@ -38,17 +40,6 @@ function App() {
             <Route
               path="/shop"
               element={<Shop products={products} addToCart={addToCart} />}
-            />
-            <Route
-              path="/cart"
-              element={
-                <Cart
-                  cart={cart}
-                  removeFromCart={removeFromCart}
-                  isCartOpen={isCartOpen}
-                  closeCart={closeCart}
-                />
-              }
             />
             <Route
               path="/product/:id"
@@ -67,6 +58,16 @@ function App() {
         </div>
         <Footer />
       </div>
+
+      {/* Cart side panel */}
+      {isCartOpen && (
+        <Cart
+          cart={cart}
+          removeFromCart={removeFromCart}
+          isCartOpen={isCartOpen}
+          closeCart={closeCart} // Pass closeCart to Cart component
+        />
+      )}
     </Router>
   );
 }

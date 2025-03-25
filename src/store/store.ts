@@ -21,21 +21,24 @@ export const useStore = create<Store>((set) => ({
       name: "Laptop",
       category: "electronics",
       price: 999,
-      imageUrl: "/public/images/1.png", // Changed to imageUrl
+      imageUrl: "/images/1.png", // Updated imageUrl path
+      description: "A high-performance laptop with a powerful processor, perfect for gaming and productivity.",
     },
     {
       id: "2",
       name: "T-Shirt",
       category: "clothing",
       price: 29,
-      imageUrl: "/images/2.jpg", // Changed to imageUrl
+      imageUrl: "/images/2.jpg", // Updated imageUrl path
+      description: "A comfortable and stylish t-shirt made of soft cotton, ideal for casual wear.",
     },
     {
       id: "3",
       name: "Sofa",
       category: "home",
       price: 499,
-      imageUrl: "/images/3.jpg", // Changed to imageUrl
+      imageUrl: "/images/3.jpg", // Updated imageUrl path
+      description: "A luxurious and spacious sofa that will elevate the look of your living room.",
     },
   ],
   products: [], // Initially empty, will be set to originalProducts
