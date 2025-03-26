@@ -1,19 +1,29 @@
-import { CartItem } from "../types/types";
+// Cart.tsx
+import { CartItem } from "../types/types"; // Import CartItem type
+import { useNavigate } from "react-router-dom"; // Import useNavigate to handle navigation
 
 type CartProps = {
-  cart: CartItem[];
-  removeFromCart: (id: string) => void;
-  isCartOpen: boolean;
-  closeCart: () => void;
+  cart: CartItem[]; // Expecting the cart prop to be an array of CartItem
+  removeFromCart: (id: string) => void; // Function to remove item from cart
+  isCartOpen: boolean; // Whether the cart is open or not
+  closeCart: () => void; // Function to close the cart
 };
 
 const Cart = ({ cart, removeFromCart, isCartOpen, closeCart }: CartProps) => {
+  const navigate = useNavigate(); // Use navigate hook
+
+  if (!isCartOpen) return null; // Only render if cart is open
+
   const totalAmount = cart.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
 
-  if (!isCartOpen) return null;  // Only render if cart is open
+  // Handle checkout click
+  const handleCheckoutClick = () => {
+    closeCart(); // Close the cart
+    navigate("/checkout"); // Navigate to the checkout page
+  };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end">
@@ -44,8 +54,12 @@ const Cart = ({ cart, removeFromCart, isCartOpen, closeCart }: CartProps) => {
                     />
                     <div>
                       <h3 className="font-semibold">{item.name}</h3>
-                      <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
-                      <p className="text-sm text-gray-600">Price: ${item.price}</p>
+                      <p className="text-sm text-gray-600">
+                        Quantity: {item.quantity}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        Price: ${item.price}
+                      </p>
                     </div>
                   </div>
                   <button
@@ -67,7 +81,7 @@ const Cart = ({ cart, removeFromCart, isCartOpen, closeCart }: CartProps) => {
             {/* Checkout Button */}
             <div className="mt-6 flex justify-center">
               <button
-                onClick={() => alert("Proceed to checkout")}
+                onClick={handleCheckoutClick} // Handle checkout and close cart
                 className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
               >
                 Checkout

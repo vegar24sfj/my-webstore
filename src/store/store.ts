@@ -22,7 +22,8 @@ export const useStore = create<Store>((set) => ({
       category: "electronics",
       price: 999,
       imageUrl: "/images/1.png", // Updated imageUrl path
-      description: "A high-performance laptop with a powerful processor, perfect for gaming and productivity.",
+      description:
+        "A high-performance laptop with a powerful processor, perfect for gaming and productivity.",
     },
     {
       id: "2",
@@ -30,7 +31,8 @@ export const useStore = create<Store>((set) => ({
       category: "clothing",
       price: 29,
       imageUrl: "/images/2.jpg", // Updated imageUrl path
-      description: "A comfortable and stylish t-shirt made of soft cotton, ideal for casual wear.",
+      description:
+        "A comfortable and stylish t-shirt made of soft cotton, ideal for casual wear.",
     },
     {
       id: "3",
@@ -38,7 +40,8 @@ export const useStore = create<Store>((set) => ({
       category: "home",
       price: 499,
       imageUrl: "/images/3.jpg", // Updated imageUrl path
-      description: "A luxurious and spacious sofa that will elevate the look of your living room.",
+      description:
+        "A luxurious and spacious sofa that will elevate the look of your living room.",
     },
   ],
   products: [], // Initially empty, will be set to originalProducts

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export function Footer() {
   return (
-    <footer className="bg-gray-100 text-white py-8">
+    <footer className="bg-gray-100 text-blue-500 py-8">
       <div className="max-w-6xl mx-auto flex justify-between items-start">
         {/* Left Side with Logo and Paragraph */}
         <div className="flex flex-col items-start">
@@ -31,17 +31,17 @@ export function Footer() {
             </h2>
             <ul className="space-y-2">
               <li>
-                <Link to="/" className="text-gray-700 hover:text-white">
+                <Link to="/" className="text-gray-700 hover:text-blue-500">
                   Home
                 </Link>
               </li>
               <li>
-                <Link to="/about" className="text-gray-700 hover:text-white">
+                <Link to="/about" className="text-gray-700 hover:text-blue-500">
                   About
                 </Link>
               </li>
               <li>
-                <Link to="/shop" className="text-gray-700 hover:text-white">
+                <Link to="/shop" className="text-gray-700 hover:text-blue-500">
                   Shop
                 </Link>
               </li>
@@ -55,7 +55,10 @@ export function Footer() {
             </h2>
             <ul className="space-y-2">
               <li>
-                <Link to="/contact" className="text-gray-700 hover:text-white">
+                <Link
+                  to="/contact"
+                  className="text-gray-700 hover:text-blue-500"
+                >
                   Contact
                 </Link>
               </li>
@@ -63,7 +66,7 @@ export function Footer() {
               <li>
                 <Link
                   to="/privacy-policy"
-                  className="text-gray-700 hover:text-white"
+                  className="text-gray-700 hover:text-blue-500"
                 >
                   Privacy Policy
                 </Link>
@@ -71,7 +74,7 @@ export function Footer() {
               <li>
                 <Link
                   to="/terms-and-conditions"
-                  className="text-gray-700 hover:text-white"
+                  className="text-gray-700 hover:text-blue-500"
                 >
                   Terms & Conditions
                 </Link>

@@ -1,3 +1,4 @@
+// App.tsx
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import { useStore } from "./store/store";
@@ -13,26 +14,19 @@ import PrivacyPolicy from "./Pages/PrivacyPolicy";
 import TermsAndConditions from "./Pages/TermsAndConditions";
 import Contact from "./Pages/Contact";
 import Breadcrumb from "./components/Breadcrumb";
-import Cart from "./components/Cart"; // Import the Cart component here
+import Cart from "./components/Cart";
 
 function App() {
   const { cart, products, addToCart, removeFromCart } = useStore();
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  // Function to open the cart (side panel)
-  const openCart = () => {
-    setIsCartOpen(true); // Open the cart
-  };
-
-  // Function to close the cart (side panel)
-  const closeCart = () => {
-    setIsCartOpen(false); // Close the cart
-  };
+  const openCart = () => setIsCartOpen(true);
+  const closeCart = () => setIsCartOpen(false);
 
   return (
     <Router>
       <div className="min-h-screen flex flex-col">
-        <Navbar cart={cart} openCart={openCart} /> {/* Pass openCart to Navbar */}
+        <Navbar cart={cart} openCart={openCart} />
         <Breadcrumb />
         <div className="flex flex-1 flex-col items-center p-4 overflow-auto">
           <Routes>
@@ -45,7 +39,10 @@ function App() {
               path="/product/:id"
               element={<ProductDetails addToCart={addToCart} />}
             />
-            <Route path="/checkout" element={<Checkout cart={cart} />} />
+            <Route
+              path="/checkout"
+              element={<Checkout cart={cart} removeFromCart={removeFromCart} />}
+            />
             <Route path="/order-confirmation" element={<OrderConfirmation />} />
             <Route path="/about" element={<About />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -59,13 +56,12 @@ function App() {
         <Footer />
       </div>
 
-      {/* Cart side panel */}
       {isCartOpen && (
         <Cart
           cart={cart}
           removeFromCart={removeFromCart}
           isCartOpen={isCartOpen}
-          closeCart={closeCart} // Pass closeCart to Cart component
+          closeCart={closeCart}
         />
       )}
     </Router>

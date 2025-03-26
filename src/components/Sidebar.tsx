@@ -110,7 +110,7 @@ export function Sidebar({
 
         <button
           onClick={handlePriceFilter}
-          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
         >
           Apply Filter
         </button>
