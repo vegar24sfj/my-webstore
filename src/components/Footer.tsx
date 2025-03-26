@@ -2,20 +2,16 @@ import { Link } from "react-router-dom";
 
 export function Footer() {
   return (
-    <footer className="bg-gray-100 text-blue-500 py-8">
-      <div className="max-w-6xl mx-auto flex justify-between items-start">
+    <footer className="bg-gray-100 text-blue-500 p-4 overflow-auto">
+      <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-start space-y-8 sm:space-y-0 sm:space-x-20">
         {/* Left Side with Logo and Paragraph */}
         <div className="flex flex-col items-start">
-          {/* Updated image path */}
           <img
             src="/images/logo.jpeg"
             alt="Logo"
             className="h-20 w-auto mb-4"
           />
-
           <p className="text-gray-400 text-sm max-w-xs">
-            {" "}
-            {/* Apply max-w-xs to restrict width */}
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae
             eros nec leo consectetur convallis. Integer et erat in dui
             sollicitudin mollis.
@@ -23,12 +19,10 @@ export function Footer() {
         </div>
 
         {/* Right Side with Quick Links and Information */}
-        <div className="flex space-x-20">
+        <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-20">
           {/* Quick Links Section */}
           <div>
-            <h2 className="text-black text-xl font-semibold mb-4">
-              Quicklinks
-            </h2>
+            <h2 className="text-black text-xl font-semibold mb-4">Quicklinks</h2>
             <ul className="space-y-2">
               <li>
                 <Link to="/" className="text-gray-700 hover:text-blue-500">
@@ -50,9 +44,7 @@ export function Footer() {
 
           {/* Information Section */}
           <div>
-            <h2 className="text-black text-xl font-semibold mb-4">
-              Information
-            </h2>
+            <h2 className="text-black text-xl font-semibold mb-4">Information</h2>
             <ul className="space-y-2">
               <li>
                 <Link
@@ -62,7 +54,6 @@ export function Footer() {
                   Contact
                 </Link>
               </li>
-
               <li>
                 <Link
                   to="/privacy-policy"
