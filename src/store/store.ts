@@ -43,6 +43,7 @@ export const useStore = create<Store>((set) => ({
       description:
         "A luxurious and spacious sofa that will elevate the look of your living room.",
     },
+    
   ],
   products: [], // Initially empty, will be set to originalProducts
 

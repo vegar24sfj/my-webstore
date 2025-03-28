@@ -17,22 +17,18 @@ const Shop: React.FC<ShopProps> = ({ products, addToCart }) => {
     originalProducts,
   } = useStore();
 
-  // Initialize products with the full list of original products when the component is mounted
   useEffect(() => {
     setProducts(originalProducts);
   }, [originalProducts, setProducts]);
 
-  // Filter products based on the selected category
   const filteredProducts = selectedCategory
     ? products.filter((product) => product.category === selectedCategory)
     : products;
 
-  // Category change handler
   const handleCategoryChange = (category: string | null) => {
     setSelectedCategory(category);
   };
 
-  // Price filter change handler (just a placeholder for now)
   const handlePriceFilterChange = (minPrice: number, maxPrice: number) => {
     const filtered = originalProducts.filter(
       (product) => product.price >= minPrice && product.price <= maxPrice
@@ -40,7 +36,6 @@ const Shop: React.FC<ShopProps> = ({ products, addToCart }) => {
     setProducts(filtered);
   };
 
-  // Sorting handler (based on price)
   const handleSortChange = (sortOrder: "price-asc" | "price-desc") => {
     const sorted = [...filteredProducts];
     sorted.sort((a, b) => {
@@ -54,7 +49,7 @@ const Shop: React.FC<ShopProps> = ({ products, addToCart }) => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex flex-col lg:flex-row">
       {/* Sidebar Component with props */}
       <Sidebar
         onCategoryChange={handleCategoryChange}
@@ -62,20 +57,20 @@ const Shop: React.FC<ShopProps> = ({ products, addToCart }) => {
         onSortChange={handleSortChange}
       />
       {/* Main Content */}
-      <main className="flex-1 p-4 overflow-auto">
+      <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto">
         <h1 className="text-2xl font-semibold mb-4">Shop</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product) => (
               <div
                 key={product.id}
-                className="border p-4 bg-white shadow-md hover:shadow-lg transition-shadow duration-200"
+                className="p-4 bg-white"
               >
                 <Link to={`/product/${product.id}`}>
                   <img
-                    src={product.imageUrl} // Use imageUrl property instead of image
+                    src={product.imageUrl}
                     alt={product.name}
-                    className="w-full h-48 object-cover mb-4"
+                    className="w-48 h-48 object-cover mb-4 hover:scale-105 duration-300 ease-in-out"
                   />
                   <h3 className="font-semibold text-lg mb-2">{product.name}</h3>
                 </Link>

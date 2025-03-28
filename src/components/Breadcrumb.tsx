@@ -5,7 +5,7 @@ export function Breadcrumb() {
   const paths = location.pathname.split("/").filter(Boolean); // Split and remove empty strings
 
   return (
-    <div className="bg-gray-50 p-4 shadow-md">
+    <div className="bg-gray-200 p-4">
       <nav aria-label="Breadcrumb">
         <ol className="flex justify-center text-gray-700 space-x-2">
           <li>

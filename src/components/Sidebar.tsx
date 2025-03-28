@@ -35,9 +35,7 @@ export function Sidebar({
   };
 
   return (
-    <div className="w-64 bg-white p-4 mt-4">
-      {" "}
-      {/* Remove 'fixed' and added 'mt-4' to ensure it appears below the navbar */}
+    <div className="w-full sm:w-64 bg-white p-4 sm:p-6 mt-4">
       {/* Categories */}
       <h2 className="text-xl font-semibold">Categories</h2>
       <FaMinus className="text-gray-300 flex-1 mb-4" /> {/* Horizontal line */}
@@ -62,6 +60,7 @@ export function Sidebar({
           </li>
         ))}
       </ul>
+
       {/* Sort Products */}
       <h2 className="text-xl font-semibold mt-6">Sort Products</h2>
       <FaMinus className="text-gray-300 flex-1 mb-4" /> {/* Horizontal line */}
@@ -79,6 +78,7 @@ export function Sidebar({
           Price (High to Low)
         </li>
       </ul>
+
       {/* Price Filter */}
       <h2 className="text-xl font-semibold mt-6">Price</h2>
       <FaMinus className="text-gray-300 flex-1 mb-4" /> {/* Horizontal line */}

@@ -28,7 +28,7 @@ function App() {
       <div className="min-h-screen flex flex-col">
         <Navbar cart={cart} openCart={openCart} />
         <Breadcrumb />
-        <div className="flex flex-1 flex-col items-center p-4 overflow-auto">
+        <div className="flex flex-1 flex-col items-center overflow-auto">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route
