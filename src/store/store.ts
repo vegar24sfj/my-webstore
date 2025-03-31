@@ -17,33 +17,33 @@ export const useStore = create<Store>((set) => ({
   selectedCategory: null,
   originalProducts: [
     {
-      id: "1",
+      id: "1", // id as string
       name: "Laptop",
       category: "electronics",
       price: 999,
-      imageUrl: "/images/1.png", // Updated imageUrl path
+      imageUrl: "/images/1.png", // Image URL for the product
       description:
         "A high-performance laptop with a powerful processor, perfect for gaming and productivity.",
     },
     {
-      id: "2",
+      id: "2", // id as string
       name: "T-Shirt",
       category: "clothing",
       price: 29,
-      imageUrl: "/images/2.jpg", // Updated imageUrl path
+      imageUrl: "/images/2.jpg", // Image URL for the product
       description:
         "A comfortable and stylish t-shirt made of soft cotton, ideal for casual wear.",
     },
     {
-      id: "3",
+      id: "3", // id as string
       name: "Sofa",
       category: "home",
       price: 499,
-      imageUrl: "/images/3.jpg", // Updated imageUrl path
+      imageUrl: "/images/3.jpg", // Image URL for the product
       description:
         "A luxurious and spacious sofa that will elevate the look of your living room.",
     },
-    
+    // More products can be added here
   ],
   products: [], // Initially empty, will be set to originalProducts
 

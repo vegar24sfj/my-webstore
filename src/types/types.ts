@@ -1,5 +1,8 @@
+// types.ts
+
+// Product type with id as string (consistent with the store)
 export interface Product {
-  id: string;
+  id: string; // id as string
   name: string;
   category: string;
   price: number;
@@ -7,10 +10,12 @@ export interface Product {
   description: string; // Add description field
 }
 
+// CartItem extends Product with quantity
 export interface CartItem extends Product {
   quantity: number;
 }
 
+// Store type definition
 export interface Store {
   cart: CartItem[];
   products: Product[];

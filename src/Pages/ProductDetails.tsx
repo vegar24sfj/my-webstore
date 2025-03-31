@@ -1,42 +1,44 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Product } from "../types/types";
-import { useStore } from "../store/store";
-import { FaStar, FaRegStar } from "react-icons/fa";
+import { Product } from "../types/types"; // Assuming Product is your TypeScript type for product
+import { useStore } from "../store/store"; // Zustand store to manage products and state
+import { FaStar, FaRegStar } from "react-icons/fa"; // Star icons for rating
 
 type ProductDetailsProps = {
   addToCart: (product: Product, quantity: number) => void; // Updated to match the store
 };
 
 const ProductDetails = ({ addToCart }: ProductDetailsProps) => {
-  const { id } = useParams();
-  const { products } = useStore();
-  const [quantity, setQuantity] = useState(1);
-  const [review, setReview] = useState("");
-  const [rating, setRating] = useState(5);
-  const navigate = useNavigate();
+  const { id } = useParams(); // Get the ID from the URL parameter
+  const { products } = useStore(); // Fetch the products from Zustand store
+  const [quantity, setQuantity] = useState(1); // State for selected quantity
+  const [review, setReview] = useState(""); // State for the review input
+  const [rating, setRating] = useState(5); // Default rating to 5
+  const navigate = useNavigate(); // Hook to navigate programmatically
 
-  if (!id)
-    return <div className="text-center text-red-500">Product not found!</div>;
+  // Convert the id to a string (id from URL)
+  const productId = id;
 
-  const product = products.find((product) => product.id === id);
+  // Find the product based on the ID from the store
+  const product = products.find((product) => product.id === productId);
 
-  if (!product)
-    return <div className="text-center text-red-500">Product not found!</div>;
+  // If product is not found, redirect to a default page like home
+  if (!product) {
+    navigate("/"); // Navigate to home or any default route
+    return null; // Optionally render nothing while navigating
+  }
 
+  // Handle the "Buy Now" button click
   const handleBuyNow = () => {
-    // Navigate to checkout page and pass the product and quantity
-    navigate("/checkout", { state: { product, quantity } });
+    navigate("/checkout", { state: { product, quantity } }); // Navigate to the checkout page with state
   };
 
   return (
     <div className="flex justify-center items-center min-h-screen py-6 px-4 bg-white">
       <div className="flex flex-wrap w-full max-w-7xl p-8 gap-8">
-        {/* Left Side: Description and Details */}
+        {/* Left Side: Product Information */}
         <div className="flex-1 flex flex-col space-y-6">
-          <h1 className="text-3xl font-semibold text-gray-900">
-            {product.name}
-          </h1>
+          <h1 className="text-3xl font-semibold text-gray-900">{product.name}</h1>
           <p className="text-lg text-gray-600">{product.category}</p>
           <p className="text-sm text-gray-500">Product Code: #{product.id}</p>
           <p className="text-xl font-medium text-teal-600">${product.price}</p>
@@ -53,6 +55,7 @@ const ProductDetails = ({ addToCart }: ProductDetailsProps) => {
             />
           </div>
 
+          {/* Add to Cart and Buy Now buttons */}
           <div className="flex space-x-4">
             <button
               onClick={() => addToCart(product, quantity)}
@@ -61,14 +64,14 @@ const ProductDetails = ({ addToCart }: ProductDetailsProps) => {
               Add to Cart
             </button>
             <button
-              onClick={handleBuyNow} // Handle Buy Now button click
+              onClick={handleBuyNow}
               className="px-6 py-3 bg-orange-500 text-white rounded-md hover:bg-orange-600 transition-colors"
             >
               Buy Now
             </button>
           </div>
 
-          {/* Description */}
+          {/* Product Description */}
           <div className="mt-6">
             <h3 className="text-lg font-semibold">Description:</h3>
             <p className="text-gray-700">{product.description}</p>

@@ -1,7 +1,6 @@
-// App.tsx
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useState } from "react";
-import { useStore } from "./store/store";
+import { useState, useEffect, useCallback } from "react";
+import { useStore } from "./store/store"; // Zustand store to manage state
 import Shop from "./Pages/Shop";
 import ProductDetails from "./Pages/ProductDetails";
 import Checkout from "./Pages/Checkout";
@@ -17,11 +16,31 @@ import Breadcrumb from "./components/Breadcrumb";
 import Cart from "./components/Cart";
 
 function App() {
-  const { cart, products, addToCart, removeFromCart } = useStore();
+  const { cart, products, addToCart, removeFromCart, setProducts } = useStore(); // Zustand store
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   const openCart = () => setIsCartOpen(true);
   const closeCart = () => setIsCartOpen(false);
+
+  // Log the products to ensure they're loaded correctly
+  useEffect(() => {
+    console.log(products); // Check the products in the store
+  }, [products]);
+
+  // Use useCallback to memoize fetchProducts function
+  const fetchProducts = useCallback(async () => {
+    const response = await fetch("/api/products"); // Replace with your actual API endpoint
+    const data = await response.json();
+    setProducts(data); // Save the fetched products to the Zustand store
+  }, [setProducts]);
+
+  useEffect(() => {
+    // If the products are not loaded, we might need to fetch them
+    if (products.length === 0) {
+      // Fetch products (or set them directly if you already have data)
+      fetchProducts();
+    }
+  }, [products, fetchProducts]);
 
   return (
     <Router>
