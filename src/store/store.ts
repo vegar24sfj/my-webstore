@@ -1,10 +1,15 @@
 import { create } from "zustand";
 import { Product, CartItem, Store } from "../types/types";
 
-// Load cart data from localStorage on initial load
+// Load cart data from localStorage on initial load with error handling
 const loadCartFromLocalStorage = (): CartItem[] => {
   const storedCart = localStorage.getItem("cart");
-  return storedCart ? JSON.parse(storedCart) : [];
+  try {
+    return storedCart ? JSON.parse(storedCart) : [];
+  } catch (error) {
+    console.error("Error loading cart from localStorage", error);
+    return [];
+  }
 };
 
 // Save cart data to localStorage whenever it changes

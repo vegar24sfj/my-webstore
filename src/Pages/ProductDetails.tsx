@@ -1,122 +1,52 @@
-import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { Product } from "../types/types"; // Assuming Product is your TypeScript type for product
-import { useStore } from "../store/store"; // Zustand store to manage products and state
-import { FaStar, FaRegStar } from "react-icons/fa"; // Star icons for rating
+import { useParams } from 'react-router-dom';
+import { useStore } from '../store/store'; // Zustand store to get product data
+import { Product } from '../types/types'; // Assuming Product is your type definition for a product
 
-type ProductDetailsProps = {
-  addToCart: (product: Product, quantity: number) => void; // Updated to match the store
-};
+// Define the type for props
+interface ProductDetailsProps {
+  addToCart: (product: Product, quantity: number) => void;
+}
 
 const ProductDetails = ({ addToCart }: ProductDetailsProps) => {
-  const { id } = useParams(); // Get the ID from the URL parameter
-  const { products } = useStore(); // Fetch the products from Zustand store
-  const [quantity, setQuantity] = useState(1); // State for selected quantity
-  const [review, setReview] = useState(""); // State for the review input
-  const [rating, setRating] = useState(5); // Default rating to 5
-  const navigate = useNavigate(); // Hook to navigate programmatically
+  const { id } = useParams(); // Get the id from the URL params
+  const { products } = useStore(); // Get products from Zustand store
 
-  // Convert the id to a string (id from URL)
-  const productId = id;
+  const productId = id ? id : ''; // Ensure the ID is treated as a string
 
-  // Find the product based on the ID from the store
-  const product = products.find((product) => product.id === productId);
+  // Find the product by ID
+  const product = products.find((p) => p.id === productId);
 
-  // If product is not found, redirect to a default page like home
+  // If the product is not found, show a "not found" message
   if (!product) {
-    navigate("/"); // Navigate to home or any default route
-    return null; // Optionally render nothing while navigating
+    return (
+      <div>
+        <h2>Product not found!</h2>
+        <p>Sorry, we couldn't find the product you're looking for. <a href="/shop">Go back to shop</a>.</p>
+      </div>
+    );
   }
 
-  // Handle the "Buy Now" button click
-  const handleBuyNow = () => {
-    navigate("/checkout", { state: { product, quantity } }); // Navigate to the checkout page with state
-  };
-
   return (
-    <div className="flex justify-center items-center min-h-screen py-6 px-4 bg-white">
-      <div className="flex flex-wrap w-full max-w-7xl p-8 gap-8">
-        {/* Left Side: Product Information */}
-        <div className="flex-1 flex flex-col space-y-6">
-          <h1 className="text-3xl font-semibold text-gray-900">{product.name}</h1>
-          <p className="text-lg text-gray-600">{product.category}</p>
-          <p className="text-sm text-gray-500">Product Code: #{product.id}</p>
-          <p className="text-xl font-medium text-teal-600">${product.price}</p>
+    <div className="product-details p-8">
+      <div className="product-info">
+        <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
+        <p className="mb-4">{product.description}</p>
+        <p className="font-semibold mb-4">Price: ${product.price}</p>
+        <img 
+          src={product.imageUrl || '/fallback-image.jpg'} 
+          alt={product.name} 
+          className="w-full h-96 object-cover rounded-md mb-4" 
+        />
+      </div>
 
-          {/* Quantity Selector */}
-          <div className="flex items-center space-x-4">
-            <label className="font-medium">Quantity:</label>
-            <input
-              type="number"
-              min="1"
-              value={quantity}
-              onChange={(e) => setQuantity(Number(e.target.value))}
-              className="w-16 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
-            />
-          </div>
-
-          {/* Add to Cart and Buy Now buttons */}
-          <div className="flex space-x-4">
-            <button
-              onClick={() => addToCart(product, quantity)}
-              className="px-6 py-3 bg-teal-600 text-white rounded-md hover:bg-teal-700 transition-colors"
-            >
-              Add to Cart
-            </button>
-            <button
-              onClick={handleBuyNow}
-              className="px-6 py-3 bg-orange-500 text-white rounded-md hover:bg-orange-600 transition-colors"
-            >
-              Buy Now
-            </button>
-          </div>
-
-          {/* Product Description */}
-          <div className="mt-6">
-            <h3 className="text-lg font-semibold">Description:</h3>
-            <p className="text-gray-700">{product.description}</p>
-          </div>
-
-          {/* Rating Section */}
-          <div className="flex items-center mt-6">
-            <span className="font-semibold mr-2">Rating:</span>
-            {[...Array(5)].map((_, i) => (
-              <button key={i} onClick={() => setRating(i + 1)}>
-                {i < rating ? (
-                  <FaStar className="text-yellow-500 h-6 w-6" />
-                ) : (
-                  <FaRegStar className="text-gray-300 h-6 w-6" />
-                )}
-              </button>
-            ))}
-            <span className="ml-2 text-gray-600">{rating}/5</span>
-          </div>
-
-          {/* Review Section */}
-          <div className="w-full mt-6">
-            <h3 className="text-lg font-semibold mb-2">Leave a Review</h3>
-            <textarea
-              value={review}
-              onChange={(e) => setReview(e.target.value)}
-              placeholder="Write your review..."
-              className="w-full p-2 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-              rows={3}
-            ></textarea>
-            <button className="mt-3 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-300">
-              Submit Review
-            </button>
-          </div>
-        </div>
-
-        {/* Right Side: Product Image */}
-        <div className="flex-1 max-w-sm">
-          <img
-            src={product.imageUrl}
-            alt={product.name}
-            className="w-full h-auto rounded-lg object-cover"
-            style={{ maxHeight: "400px", objectFit: "contain" }}
-          />
-        </div>
+      {/* Add to Cart button */}
+      <div className="add-to-cart">
+        <button
+          onClick={() => addToCart(product, 1)} // Add product to cart
+          className="px-6 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600"
+        >
+          Add to Cart
+        </button>
       </div>
     </div>
   );
