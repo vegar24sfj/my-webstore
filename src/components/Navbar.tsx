@@ -26,7 +26,7 @@ const Navbar = ({ cart, openCart }: NavbarProps) => {
           </Link>
 
           {/* Navigation Links for Desktop */}
-          <div className="hidden md:flex space-x-4">
+          <div className="hidden md:flex space-x-6">
             <Link to="/" className="hover:text-blue-500">
               Home
             </Link>
@@ -92,7 +92,7 @@ const Navbar = ({ cart, openCart }: NavbarProps) => {
             onClick={openCart} // Open cart side panel when clicked
             className="hover:text-blue-500 flex items-center"
           >
-            <FaShoppingCart className="text-gray-950 text-3xl hover:text-blue-500" />
+            <FaShoppingCart className="text-gray-950 text-2xl hover:text-blue-500" />
             {totalQuantity > 0 && (
               <span className="absolute top-[-10px] right-[-10px] bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                 {totalQuantity}

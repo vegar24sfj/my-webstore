@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Product } from "../types/types"; // Assuming Product is defined in types.ts
 import { Link } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
@@ -13,39 +13,55 @@ const Shop: React.FC<ShopProps> = ({ products, addToCart }) => {
   const {
     selectedCategory,
     setSelectedCategory,
-    setProducts,
+    setProducts, // Use setProducts if you want to update the store
     originalProducts,
   } = useStore();
 
-  useEffect(() => {
-    setProducts(originalProducts);
-  }, [originalProducts, setProducts]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>(products);
+  const [minPrice, setMinPrice] = useState<number>(0);
+  const [maxPrice, setMaxPrice] = useState<number>(1000);
+  const [sortOrder, setSortOrder] = useState<"price-asc" | "price-desc">("price-asc");
 
-  const filteredProducts = selectedCategory
-    ? products.filter((product) => product.category === selectedCategory)
-    : products;
+  useEffect(() => {
+    // Filter by category and price on every change
+    let newFilteredProducts = [...originalProducts];
+
+    // Filter by selected category
+    if (selectedCategory) {
+      newFilteredProducts = newFilteredProducts.filter(
+        (product) => product.category === selectedCategory
+      );
+    }
+
+    // Filter by price range
+    newFilteredProducts = newFilteredProducts.filter(
+      (product) => product.price >= minPrice && product.price <= maxPrice
+    );
+
+    // Apply sorting
+    if (sortOrder === "price-asc") {
+      newFilteredProducts = newFilteredProducts.sort((a, b) => a.price - b.price);
+    } else if (sortOrder === "price-desc") {
+      newFilteredProducts = newFilteredProducts.sort((a, b) => b.price - a.price);
+    }
+
+    setFilteredProducts(newFilteredProducts);
+
+    // Update Zustand store with filtered products
+    setProducts(newFilteredProducts);
+  }, [selectedCategory, minPrice, maxPrice, sortOrder, originalProducts, setProducts]);
 
   const handleCategoryChange = (category: string | null) => {
     setSelectedCategory(category);
   };
 
-  const handlePriceFilterChange = (minPrice: number, maxPrice: number) => {
-    const filtered = originalProducts.filter(
-      (product) => product.price >= minPrice && product.price <= maxPrice
-    );
-    setProducts(filtered);
+  const handlePriceFilterChange = (min: number, max: number) => {
+    setMinPrice(min);
+    setMaxPrice(max);
   };
 
-  const handleSortChange = (sortOrder: "price-asc" | "price-desc") => {
-    const sorted = [...filteredProducts];
-    sorted.sort((a, b) => {
-      if (sortOrder === "price-asc") {
-        return a.price - b.price;
-      } else {
-        return b.price - a.price;
-      }
-    });
-    setProducts(sorted);
+  const handleSortChange = (order: "price-asc" | "price-desc") => {
+    setSortOrder(order);
   };
 
   return (
@@ -62,10 +78,7 @@ const Shop: React.FC<ShopProps> = ({ products, addToCart }) => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product) => (
-              <div
-                key={product.id}
-                className="p-4 bg-white"
-              >
+              <div key={product.id} className="p-4 bg-white">
                 <Link to={`/product/${product.id}`}>
                   <img
                     src={product.imageUrl}
@@ -74,9 +87,7 @@ const Shop: React.FC<ShopProps> = ({ products, addToCart }) => {
                   />
                   <h3 className="font-semibold text-lg mb-2">{product.name}</h3>
                 </Link>
-
                 <p className="text-gray-700 mb-2">${product.price}</p>
-
                 <button
                   onClick={() => addToCart(product, 1)} // Add quantity of 1 by default
                   className="bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-600 transition"

@@ -51,7 +51,7 @@ const HeroBanner = () => {
       <h2 className="text-2xl sm:text-3xl font-bold text-center sm:text-left">
         Explore Our Latest Collection!
       </h2>
-      <p className="text-sm sm:text-lg mt-2 text-center sm:text-left">
+      <p className="mb-6 text-sm sm:text-lg mt-2 text-center sm:text-left">
         Find high-quality products at great prices. Start shopping today!
       </p>
 

@@ -1,12 +1,10 @@
-// src/components/PopularCategories.tsx
 import { Link } from "react-router-dom";
 
 const PopularCategories = () => {
   const categories = [
-    { id: "electronics", name: "Electronics", imageUrl: "/images/electronics.jpg" },
-    { id: "clothing", name: "Clothing", imageUrl: "/images/clothing.jpg" },
-    { id: "home", name: "Home", imageUrl: "/images/home.jpg" },
-    // Add more categories as needed
+    { id: "electronics", name: "Electronics", imageUrl: "/images/1.png" },
+    { id: "clothing", name: "Clothing", imageUrl: "/images/2.jpg" },
+    { id: "home", name: "Home", imageUrl: "/images/3.jpg" },
   ];
 
   return (
@@ -16,15 +14,19 @@ const PopularCategories = () => {
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {categories.map((category) => (
-          <div key={category.id} className="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300">
-            <Link to={`/shop/${category.id}`} className="block">
+          <div
+            key={category.id}
+            className="flex flex-col items-center justify-center"
+            style={{ width: "200px", height: "250px" }} // Circle plus space for text
+          >
+            <Link to={`/shop/${category.id}`} className="w-full h-full rounded-full overflow-hidden">
               <img
                 src={category.imageUrl}
                 alt={category.name}
-                className="w-full h-48 object-cover rounded-md mb-4"
+                className="w-full h-full object-cover rounded-full"
               />
-              <h3 className="font-semibold text-xl text-center">{category.name}</h3>
             </Link>
+            <h3 className="mt-4 font-semibold text-xl text-center">{category.name}</h3> {/* Name under circle */}
           </div>
         ))}
       </div>
