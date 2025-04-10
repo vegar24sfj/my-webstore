@@ -12,22 +12,20 @@ const PopularCategories = () => {
       <h2 className="text-2xl sm:text-3xl font-bold text-center sm:text-left mb-6">
         Explore Popular Categories
       </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <div className="grid grid-rows-1 sm:grid-cols-2 md:grid-cols-3 gap-0 justify-items-center">
         {categories.map((category) => (
-          <div
+          <Link
             key={category.id}
+            to={`/shop/${category.id}`}
             className="flex flex-col items-center justify-center"
-            style={{ width: "200px", height: "250px" }} // Circle plus space for text
           >
-            <Link to={`/shop/${category.id}`} className="w-full h-full rounded-full overflow-hidden">
-              <img
-                src={category.imageUrl}
-                alt={category.name}
-                className="w-full h-full object-cover rounded-full"
-              />
-            </Link>
-            <h3 className="mt-4 font-semibold text-xl text-center">{category.name}</h3> {/* Name under circle */}
-          </div>
+            <img
+              src={category.imageUrl}
+              alt={category.name}
+              className="w-40 h-40 object-cover rounded-full" // Circular images with set width and height
+            />
+            <h3 className="mt-4 font-semibold text-xl text-center">{category.name}</h3>
+          </Link>
         ))}
       </div>
     </div>

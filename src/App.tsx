@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useStore } from "./store/store"; // Zustand store
 import Navbar from "./components/Navbar";
@@ -41,13 +41,14 @@ function App() {
       <div className="min-h-screen flex flex-col">
         <Navbar cart={cart} openCart={openCart} />
         <Breadcrumb />
-        <div className="flex flex-1 flex-col items-center overflow-auto">
+        <div className="flex-1 overflow-auto">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route
               path="/shop"
               element={<Shop products={originalProducts} addToCart={addToCart} />}
             />
+            <Route path="/product" element={<Navigate to="/shop" replace />} />
             <Route
               path="/product/:id"
               element={<ProductDetails addToCart={addToCart} />}

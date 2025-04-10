@@ -8,6 +8,8 @@ export interface Product {
   price: number;
   imageUrl: string;
   description: string; // Add description field
+  code?: string;
+  mainCategory?: string;
 }
 
 // CartItem extends Product with quantity

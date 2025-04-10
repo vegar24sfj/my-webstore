@@ -35,9 +35,9 @@ export function Sidebar({
   };
 
   return (
-    <div className="w-full sm:w-64 bg-white p-4 sm:p-6 mt-4">
+    <div className="w-full sm:w-64 bg-white p-4 sm:p-6">
       {/* Categories */}
-      <h2 className="text-xl font-semibold">Categories</h2>
+      <h2 className="text-xl font-semibold mt-6">Categories</h2>
       <FaMinus className="text-gray-300 flex-1 mb-4" /> {/* Horizontal line */}
       <ul className="space-y-2">
         <li

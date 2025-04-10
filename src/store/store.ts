@@ -26,27 +26,27 @@ export const useStore = create<Store>((set) => ({
       name: "Laptop",
       category: "electronics",
       price: 999,
-      imageUrl: "/images/1.png", // Image URL for the product
+      imageUrl: "/images/laptop.jpg", // Image URL for the product
       description:
         "A high-performance laptop with a powerful processor, perfect for gaming and productivity.",
     },
     {
       id: "2", // id as string
-      name: "T-Shirt",
+      name: "High heels",
       category: "clothing",
-      price: 29,
+      price: 79,
       imageUrl: "/images/2.jpg", // Image URL for the product
       description:
-        "A comfortable and stylish t-shirt made of soft cotton, ideal for casual wear.",
+        "Elegant and stylish, these high heels add the perfect touch of sophistication to any outfit—designed for both comfort and confidence, from day to night.",
     },
     {
       id: "3", // id as string
-      name: "Sofa",
+      name: "Organic cleaner",
       category: "home",
-      price: 499,
+      price: 14,
       imageUrl: "/images/3.jpg", // Image URL for the product
       description:
-        "A luxurious and spacious sofa that will elevate the look of your living room.",
+        "Our Eco-friendly Organic Cleaner effectively tackles dirt and stains without harmful chemicals. Safe for your home and the planet, it cleans all surfaces while leaving a fresh, natural scent. Clean smarter with a healthier, sustainable solution!",
     },
     // More products can be added here
   ],

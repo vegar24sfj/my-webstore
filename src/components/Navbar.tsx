@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { CartItem } from "../types/types";
-import { FaShoppingCart } from "react-icons/fa";
+import { BsCart3 } from "react-icons/bs";
 import { useState } from "react";
 
 type NavbarProps = {
@@ -20,7 +20,7 @@ const Navbar = ({ cart, openCart }: NavbarProps) => {
     <nav className="bg-white p-4">
       <div className="max-w-6xl mx-auto flex justify-between items-center text-gray-950">
         {/* Left Section with Logo */}
-        <div className="flex items-center space-x-10">
+        <div className="flex items-center justify-start space-x-6">
           <Link to="/" className="flex items-center">
             <img src="/images/logo.jpeg" alt="Logo" className="h-20 w-auto" />
           </Link>
@@ -92,7 +92,7 @@ const Navbar = ({ cart, openCart }: NavbarProps) => {
             onClick={openCart} // Open cart side panel when clicked
             className="hover:text-blue-500 flex items-center"
           >
-            <FaShoppingCart className="text-gray-950 text-2xl hover:text-blue-500" />
+            <BsCart3 className="text-gray-950 text-3xl hover:text-blue-500" />
             {totalQuantity > 0 && (
               <span className="absolute top-[-10px] right-[-10px] bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                 {totalQuantity}
