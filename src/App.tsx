@@ -16,24 +16,31 @@ import Breadcrumb from "./components/Breadcrumb";
 import Cart from "./components/Cart";
 
 function App() {
-  const { cart, originalProducts, addToCart, removeFromCart, setProducts } = useStore(); // Zustand store
+  const {
+    cart,
+    originalProducts,
+    addToCart,
+    removeFromCart,
+    setProducts
+  } = useStore(); // Zustand store
+
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [loading, setLoading] = useState(false); // Set to false since we're not fetching from an API
+  const [loading, setLoading] = useState(false);
 
   const openCart = () => setIsCartOpen(true);
   const closeCart = () => setIsCartOpen(false);
 
   useEffect(() => {
     if (originalProducts.length > 0) {
-      setProducts(originalProducts); // Set static products to Zustand store
-      setLoading(false); // Set loading to false after products are available
+      setProducts(originalProducts);
+      setLoading(false);
     } else {
-      setLoading(true); // If no products, keep loading
+      setLoading(true);
     }
   }, [originalProducts, setProducts]);
 
   if (loading) {
-    return <div>Loading...</div>; // Show loading message while products are being initialized
+    return <div>Loading...</div>;
   }
 
   return (
@@ -44,20 +51,32 @@ function App() {
         <div className="flex-1 overflow-auto">
           <Routes>
             <Route path="/" element={<Home />} />
+
+            {/* Shop Routes */}
+            <Route
+              path="/shop"
+              element={<Shop products={originalProducts} addToCart={addToCart} />}
+            />
             <Route
               path="/shop/:category"
               element={<Shop products={originalProducts} addToCart={addToCart} />}
             />
+
+            {/* Product Detail */}
             <Route path="/product" element={<Navigate to="/shop" replace />} />
             <Route
               path="/product/:id"
               element={<ProductDetails addToCart={addToCart} />}
             />
+
+            {/* Checkout */}
             <Route
               path="/checkout"
               element={<Checkout cart={cart} removeFromCart={removeFromCart} />}
             />
             <Route path="/order-confirmation" element={<OrderConfirmation />} />
+
+            {/* Other Pages */}
             <Route path="/about" element={<About />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
@@ -67,6 +86,7 @@ function App() {
         <Footer />
       </div>
 
+      {/* Cart Sidebar */}
       {isCartOpen && (
         <Cart
           cart={cart}
