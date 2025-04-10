@@ -45,7 +45,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route
-              path="/shop"
+              path="/shop/:category"
               element={<Shop products={originalProducts} addToCart={addToCart} />}
             />
             <Route path="/product" element={<Navigate to="/shop" replace />} />
