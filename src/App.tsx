@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { useUser } from "@clerk/clerk-react"; // Clerk-auth
 import { useStore } from "./store/store"; // Zustand store
 
+// Components
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Breadcrumb from "./components/Breadcrumb";
@@ -26,7 +27,7 @@ function App() {
     addToCart,
     removeFromCart,
     setProducts,
-    setCart, // <- for å sette cart fra backend
+    setCart, // brukes til å sette cart fra backend
   } = useStore();
 
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -35,7 +36,10 @@ function App() {
   const { user } = useUser();
   const userId = user?.id;
 
-  // Hent produkter ved førstegangsinnlasting
+  const openCart = () => setIsCartOpen(true);
+  const closeCart = () => setIsCartOpen(false);
+
+  // 🔄 Hent produkter ved førstegangsinnlasting
   useEffect(() => {
     if (originalProducts.length > 0) {
       setProducts(originalProducts);
@@ -43,7 +47,7 @@ function App() {
     }
   }, [originalProducts, setProducts]);
 
-  // 🔄 Hent brukerens cart fra backend etter innlogging
+  // 🔄 Hent cart fra backend etter innlogging
   useEffect(() => {
     if (userId) {
       fetch(`http://localhost:5000/api/cart/${userId}`)
@@ -55,8 +59,18 @@ function App() {
     }
   }, [userId, setCart]);
 
-  const openCart = () => setIsCartOpen(true);
-  const closeCart = () => setIsCartOpen(false);
+  // 💾 Automatisk lagring av cart til backend når den endres
+  useEffect(() => {
+    if (userId && cart.length >= 0) {
+      fetch("http://localhost:5000/api/cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId, items: cart }),
+      }).catch((err) => console.error("Feil ved lagring av cart:", err));
+    }
+  }, [cart, userId]);
 
   if (loading) {
     return <div className="text-center mt-10 text-xl">Laster produkter...</div>;
@@ -69,9 +83,10 @@ function App() {
         <Breadcrumb />
         <div className="flex-1 overflow-auto">
           <Routes>
+            {/* Hovedside */}
             <Route path="/" element={<Home />} />
 
-            {/* Shop Routes */}
+            {/* Shop */}
             <Route
               path="/shop"
               element={<Shop products={originalProducts} addToCart={addToCart} />}
@@ -81,21 +96,21 @@ function App() {
               element={<Shop products={originalProducts} addToCart={addToCart} />}
             />
 
-            {/* Product Details */}
+            {/* Produktdetaljer */}
             <Route path="/product" element={<Navigate to="/shop" replace />} />
             <Route
               path="/product/:id"
               element={<ProductDetails addToCart={addToCart} />}
             />
 
-            {/* Checkout & Order */}
+            {/* Checkout og bestilling */}
             <Route
               path="/checkout"
               element={<Checkout cart={cart} removeFromCart={removeFromCart} />}
             />
             <Route path="/order-confirmation" element={<OrderConfirmation />} />
 
-            {/* Static Pages */}
+            {/* Informasjonssider */}
             <Route path="/about" element={<About />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
@@ -105,7 +120,7 @@ function App() {
         <Footer />
       </div>
 
-      {/* Cart Sidebar */}
+      {/* Handlekurv Sidebar */}
       {isCartOpen && (
         <Cart
           cart={cart}
