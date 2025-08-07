@@ -1,15 +1,15 @@
-import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { useUser } from "@clerk/clerk-react"; // Clerk-auth
-import { useStore } from "./store/store"; // Zustand store
+import { useEffect, useState } from "react";
+import { useUser } from "@clerk/clerk-react";
+import { useStore } from "./store/store";
 
-// Components
+// Komponenter
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Breadcrumb from "./components/Breadcrumb";
 import Cart from "./components/Cart";
 
-// Pages
+// Sider
 import Home from "./Pages/Home";
 import Shop from "./Pages/Shop";
 import ProductDetails from "./Pages/ProductDetails";
@@ -26,20 +26,18 @@ function App() {
     originalProducts,
     addToCart,
     removeFromCart,
+    setCart,
     setProducts,
-    setCart, // brukes til å sette cart fra backend
   } = useStore();
 
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-
   const { user } = useUser();
-  const userId = user?.id;
 
   const openCart = () => setIsCartOpen(true);
   const closeCart = () => setIsCartOpen(false);
 
-  // 🔄 Hent produkter ved førstegangsinnlasting
+  // Last inn produkter
   useEffect(() => {
     if (originalProducts.length > 0) {
       setProducts(originalProducts);
@@ -47,46 +45,55 @@ function App() {
     }
   }, [originalProducts, setProducts]);
 
-  // 🔄 Hent cart fra backend etter innlogging
+  // 🔄 Hent cart fra MongoDB ved innlogging
   useEffect(() => {
-    if (userId) {
-      fetch(`http://localhost:5000/api/cart/${userId}`)
+    if (user?.id) {
+      fetch(`http://localhost:5000/api/cart/${user.id}`)
         .then((res) => res.json())
         .then((data) => {
-          setCart(data.items || []);
+          if (data.items) {
+            setCart(data.items);
+            console.log("✅ Cart hentet fra MongoDB");
+          }
         })
-        .catch((err) => console.error("Feil ved henting av cart:", err));
+        .catch((err) => console.error("❌ Feil ved henting av cart:", err));
     }
-  }, [userId, setCart]);
+  }, [user?.id, setCart]);
 
-  // 💾 Automatisk lagring av cart til backend når den endres
+  // ☁️ Lagre cart til MongoDB når den endres
   useEffect(() => {
-    if (userId && cart.length >= 0) {
+    if (user?.id && cart.length > 0) {
       fetch("http://localhost:5000/api/cart", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ userId, items: cart }),
-      }).catch((err) => console.error("Feil ved lagring av cart:", err));
+        body: JSON.stringify({
+          userId: user.id,
+          items: cart,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("🛒 Cart synkronisert:", data.message);
+        })
+        .catch((err) => {
+          console.error("❌ Cart sync error:", err);
+        });
     }
-  }, [cart, userId]);
+  }, [cart, user?.id]);
 
-  if (loading) {
-    return <div className="text-center mt-10 text-xl">Laster produkter...</div>;
-  }
+  if (loading) return <div className="p-10 text-center">Loading...</div>;
 
   return (
     <Router>
       <div className="min-h-screen flex flex-col">
         <Navbar cart={cart} openCart={openCart} />
         <Breadcrumb />
-        <div className="flex-1 overflow-auto">
-          <Routes>
-            {/* Hovedside */}
-            <Route path="/" element={<Home />} />
 
-            {/* Shop */}
+        <main className="flex-1 overflow-auto">
+          <Routes>
+            <Route path="/" element={<Home />} />
             <Route
               path="/shop"
               element={<Shop products={originalProducts} addToCart={addToCart} />}
@@ -95,32 +102,27 @@ function App() {
               path="/shop/:category"
               element={<Shop products={originalProducts} addToCart={addToCart} />}
             />
-
-            {/* Produktdetaljer */}
             <Route path="/product" element={<Navigate to="/shop" replace />} />
             <Route
               path="/product/:id"
               element={<ProductDetails addToCart={addToCart} />}
             />
-
-            {/* Checkout og bestilling */}
             <Route
               path="/checkout"
               element={<Checkout cart={cart} removeFromCart={removeFromCart} />}
             />
             <Route path="/order-confirmation" element={<OrderConfirmation />} />
-
-            {/* Informasjonssider */}
             <Route path="/about" element={<About />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
             <Route path="/contact" element={<Contact />} />
           </Routes>
-        </div>
+        </main>
+
         <Footer />
       </div>
 
-      {/* Handlekurv Sidebar */}
+      {/* 🛒 Cart Sidebar */}
       {isCartOpen && (
         <Cart
           cart={cart}
