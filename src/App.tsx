@@ -1,19 +1,23 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { useUser } from "@clerk/clerk-react"; // Clerk-auth
 import { useStore } from "./store/store"; // Zustand store
+
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import Breadcrumb from "./components/Breadcrumb";
+import Cart from "./components/Cart";
+
+// Pages
 import Home from "./Pages/Home";
-import ProductDetails from "./Pages/ProductDetails";
 import Shop from "./Pages/Shop";
+import ProductDetails from "./Pages/ProductDetails";
 import Checkout from "./Pages/Checkout";
 import OrderConfirmation from "./Pages/OrderConfirmation";
 import About from "./Pages/About";
 import PrivacyPolicy from "./Pages/PrivacyPolicy";
 import TermsAndConditions from "./Pages/TermsAndConditions";
 import Contact from "./Pages/Contact";
-import Breadcrumb from "./components/Breadcrumb";
-import Cart from "./components/Cart";
 
 function App() {
   const {
@@ -21,26 +25,41 @@ function App() {
     originalProducts,
     addToCart,
     removeFromCart,
-    setProducts
-  } = useStore(); // Zustand store
+    setProducts,
+    setCart, // <- for å sette cart fra backend
+  } = useStore();
 
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const openCart = () => setIsCartOpen(true);
-  const closeCart = () => setIsCartOpen(false);
+  const { user } = useUser();
+  const userId = user?.id;
 
+  // Hent produkter ved førstegangsinnlasting
   useEffect(() => {
     if (originalProducts.length > 0) {
       setProducts(originalProducts);
       setLoading(false);
-    } else {
-      setLoading(true);
     }
   }, [originalProducts, setProducts]);
 
+  // 🔄 Hent brukerens cart fra backend etter innlogging
+  useEffect(() => {
+    if (userId) {
+      fetch(`http://localhost:5000/api/cart/${userId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setCart(data.items || []);
+        })
+        .catch((err) => console.error("Feil ved henting av cart:", err));
+    }
+  }, [userId, setCart]);
+
+  const openCart = () => setIsCartOpen(true);
+  const closeCart = () => setIsCartOpen(false);
+
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="text-center mt-10 text-xl">Laster produkter...</div>;
   }
 
   return (
@@ -62,21 +81,21 @@ function App() {
               element={<Shop products={originalProducts} addToCart={addToCart} />}
             />
 
-            {/* Product Detail */}
+            {/* Product Details */}
             <Route path="/product" element={<Navigate to="/shop" replace />} />
             <Route
               path="/product/:id"
               element={<ProductDetails addToCart={addToCart} />}
             />
 
-            {/* Checkout */}
+            {/* Checkout & Order */}
             <Route
               path="/checkout"
               element={<Checkout cart={cart} removeFromCart={removeFromCart} />}
             />
             <Route path="/order-confirmation" element={<OrderConfirmation />} />
 
-            {/* Other Pages */}
+            {/* Static Pages */}
             <Route path="/about" element={<About />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-and-conditions" element={<TermsAndConditions />} />

@@ -12,6 +12,7 @@
   "dependencies": {
     "@clerk/clerk-react": "^5.32.0",
     "@tailwindcss/vite": "^4.0.12",
+    "mongodb": "^6.18.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
@@ -33,5 +34,18 @@
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.24.1",
     "vite": "^6.2.1"
-  }
+  },
+  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
+  "main": "eslint.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vegar24sfj/my-webstore.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vegar24sfj/my-webstore/issues"
+  },
+  "homepage": "https://github.com/vegar24sfj/my-webstore#readme"
 }
