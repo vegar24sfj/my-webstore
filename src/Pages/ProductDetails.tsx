@@ -1,127 +1,129 @@
-import { useParams, useNavigate } from 'react-router-dom';
-import { useStore } from '../store/store';
-import { Product } from '../types/types';
-import { useState } from 'react';
-import { AiFillStar, AiOutlineStar } from "react-icons/ai";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useStore } from "../store/store";
+import { Product } from "../types/types";
 
-// Props for ProductDetails
 interface ProductDetailsProps {
   addToCart: (product: Product, quantity: number) => void;
 }
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({ addToCart }) => {
   const { id } = useParams();
-  const { originalProducts } = useStore(); // ✅ Bruk originalProducts, ikke filtrerte products
-  const navigate = useNavigate();
+  const { originalProducts } = useStore();
+  const [product, setProduct] = useState<Product | null>(null);
+  const [quantity, setQuantity] = useState<number>(1);
 
-  const [review, setReview] = useState('');
-  const [rating, setRating] = useState(0);
+  // Review & rating state
+  const [reviewText, setReviewText] = useState<string>("");
+  const [rating, setRating] = useState<number>(0);
+  const [submittedReviews, setSubmittedReviews] = useState<
+    { text: string; rating: number }[]
+  >([]);
 
-  // Hent produktet basert på id
-  const productId = id ?? '';
-  const product = originalProducts.find((p) => p.id === productId);
+  useEffect(() => {
+    if (id) {
+      const foundProduct = originalProducts.find((p) => p.id === id);
+      if (foundProduct) setProduct(foundProduct);
+    }
+  }, [id, originalProducts]);
 
-  if (!product) {
-    return (
-      <div className="p-8 text-center">
-        <h2 className="text-2xl font-bold mb-2">Product not found!</h2>
-        <p className="text-gray-600">
-          Sorry, we couldn't find the product you're looking for.{' '}
-          <a href="/shop" className="text-blue-500 hover:underline">Go back to shop</a>.
-        </p>
-      </div>
-    );
-  }
-
-  const handleBuyNow = () => {
-    addToCart(product, 1);
-    navigate('/checkout');
+  const handleSubmitReview = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (reviewText && rating > 0) {
+      setSubmittedReviews([...submittedReviews, { text: reviewText, rating }]);
+      setReviewText("");
+      setRating(0);
+    }
   };
 
-  const handleReviewSubmit = () => {
-    alert(`Review Submitted!\nRating: ${rating} stars\nComment: ${review}`);
-    setReview('');
-    setRating(0);
-  };
+  if (!product) return <p className="text-gray-700 text-center p-6">Product not found</p>;
 
   return (
-    <div className="product-details p-8 max-w-5xl mx-auto">
-      {/* Produkt-info */}
-      <div className="product-info mb-6">
-        <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
-        <p className="text-sm text-gray-500 mb-1">
-          Product Code: {product.code || 'N/A'}
-        </p>
-        <p className="text-sm text-gray-500 mb-1">
-          Main Category: {product.mainCategory || 'N/A'}
-        </p>
-        <p className="text-sm text-gray-500 mb-4">
-          Category: {product.category || 'N/A'}
-        </p>
-        <p className="text-lg font-semibold mb-2">Price: ${product.price}</p>
+    <div className="max-w-4xl mx-auto p-6">
+      <h1 className="text-4xl font-bold text-gray-800 mb-6 text-center">{product.name}</h1>
+
+      <div className="flex flex-col lg:flex-row gap-6">
         <img
-          src={product.imageUrl || '/fallback-image.jpg'}
+          src={product.imageUrl}
           alt={product.name}
-          className="w-full h-96 object-cover rounded-md mb-6"
+          className="w-full lg:w-1/2 h-auto object-cover rounded"
         />
-        <p className="text-gray-700 mb-6">{product.description}</p>
-      </div>
+        <div className="flex-1">
+          <p className="text-lg text-gray-700 mb-4">{product.description}</p>
+          <p className="text-2xl font-semibold text-gray-800 mb-4">${product.price}</p>
 
-      {/* Knapper */}
-      <div className="flex gap-4 mb-8">
-        <button
-          onClick={() => addToCart(product, 1)}
-          className="px-6 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600"
-        >
-          Add to Cart
-        </button>
-        <button
-          onClick={handleBuyNow}
-          className="px-6 py-2 bg-green-500 text-white font-semibold rounded hover:bg-green-600"
-        >
-          Buy Now
-        </button>
-      </div>
+          <div className="flex items-center gap-4 mb-4">
+            <input
+              type="number"
+              value={quantity}
+              onChange={(e) => setQuantity(Number(e.target.value))}
+              min={1}
+              className="w-20 p-2 border rounded"
+            />
+            <button
+              onClick={() => addToCart(product, quantity)}
+              className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition"
+            >
+              Add to Cart
+            </button>
+          </div>
 
-      {/* Submit Review */}
-      <div className="review-section mt-10">
-        <h2 className="text-2xl font-bold mb-4">Submit a Review</h2>
+          {/* Review & Rating Section */}
+          <div className="mt-8 border-t pt-6">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Submit a Review</h2>
+            <form onSubmit={handleSubmitReview} className="space-y-4">
+              <div>
+                <label className="block mb-1 text-gray-700">Rating:</label>
+                <select
+                  value={rating}
+                  onChange={(e) => setRating(Number(e.target.value))}
+                  className="p-2 border rounded"
+                >
+                  <option value={0}>Select rating</option>
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <option key={star} value={star}>
+                      {star} Star{star > 1 ? "s" : ""}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-        {/* Stjerner */}
-        <div className="flex items-center mb-3">
-          {[1, 2, 3, 4, 5].map((star) =>
-            star <= rating ? (
-              <AiFillStar
-                key={star}
-                className="text-yellow-400 cursor-pointer text-2xl"
-                onClick={() => setRating(star)}
-              />
-            ) : (
-              <AiOutlineStar
-                key={star}
-                className="text-gray-300 cursor-pointer text-2xl"
-                onClick={() => setRating(star)}
-              />
-            )
-          )}
+              <div>
+                <label className="block mb-1 text-gray-700">Review:</label>
+                <textarea
+                  value={reviewText}
+                  onChange={(e) => setReviewText(e.target.value)}
+                  className="w-full p-2 border rounded"
+                  rows={4}
+                  placeholder="Write your review here"
+                  required
+                ></textarea>
+              </div>
+
+              <button
+                type="submit"
+                className="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600 transition"
+              >
+                Submit Review
+              </button>
+            </form>
+
+            {/* Display submitted reviews */}
+            {submittedReviews.length > 0 && (
+              <div className="mt-6">
+                <h3 className="text-xl font-semibold text-gray-800 mb-4">Reviews</h3>
+                <ul className="space-y-4">
+                  {submittedReviews.map((rev, idx) => (
+                    <li key={idx} className="border p-4 rounded bg-gray-50">
+                      <p className="font-semibold">Rating: {rev.rating} / 5</p>
+                      <p className="text-gray-700">{rev.text}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
-
-        {/* Review Textarea */}
-        <textarea
-          value={review}
-          onChange={(e) => setReview(e.target.value)}
-          rows={4}
-          placeholder="Write your review..."
-          className="w-full border border-gray-300 p-3 rounded mb-4"
-        />
-
-        {/* Submit Button */}
-        <button
-          onClick={handleReviewSubmit}
-          className="px-4 py-2 bg-indigo-600 text-white font-medium rounded hover:bg-indigo-700"
-        >
-          Submit Review
-        </button>
       </div>
     </div>
   );

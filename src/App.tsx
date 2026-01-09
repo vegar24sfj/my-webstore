@@ -70,7 +70,7 @@ function App() {
         <Navbar cart={cart} openCart={openCart} />
 
         {/* Main content */}
-        <main className="flex-1 overflow-auto">
+        <main className="flex-1">
           <Routes>
             {/* Forside */}
             <Route
