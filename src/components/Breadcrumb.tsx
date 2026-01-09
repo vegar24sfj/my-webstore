@@ -1,13 +1,14 @@
+// Breadcrumb.tsx
 import { Link, useLocation } from "react-router-dom";
 
 export function Breadcrumb() {
   const location = useLocation();
-  const paths = location.pathname.split("/").filter(Boolean); // Split and remove empty strings
+  const paths = location.pathname.split("/").filter(Boolean);
 
   return (
-    <div className="bg-gray-100 p-4">
+    <div className="bg-gray-100 px-4 py-2"> {/* mindre padding */}
       <nav aria-label="Breadcrumb">
-        <ol className="flex justify-center text-gray-700 space-x-2">
+        <ol className="flex text-gray-700 space-x-1 sm:space-x-2">
           <li>
             <Link to="/" className="text-blue-500 hover:text-blue-700">
               Home
@@ -16,13 +17,11 @@ export function Breadcrumb() {
           {paths.map((path, index) => {
             const to = `/${paths.slice(0, index + 1).join("/")}`;
             const isLast = index === paths.length - 1;
-
-            // Skip the cart route in the breadcrumb
             if (path === "cart") return null;
 
             return (
               <li key={to} className="flex items-center">
-                <span className="mx-2">/</span>
+                <span className="mx-1 sm:mx-2">/</span>
                 {isLast ? (
                   <span className="text-gray-500">{path}</span>
                 ) : (

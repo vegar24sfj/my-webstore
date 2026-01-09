@@ -4,29 +4,30 @@ import { Product } from '../types/types';
 import { useState } from 'react';
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 
-// Define the type for props
+// Props for ProductDetails
 interface ProductDetailsProps {
   addToCart: (product: Product, quantity: number) => void;
 }
 
-const ProductDetails = ({ addToCart }: ProductDetailsProps) => {
+const ProductDetails: React.FC<ProductDetailsProps> = ({ addToCart }) => {
   const { id } = useParams();
-  const { products } = useStore();
+  const { originalProducts } = useStore(); // ✅ Bruk originalProducts, ikke filtrerte products
   const navigate = useNavigate();
 
   const [review, setReview] = useState('');
   const [rating, setRating] = useState(0);
 
+  // Hent produktet basert på id
   const productId = id ?? '';
-  const product = products.find((p) => p.id === productId);
+  const product = originalProducts.find((p) => p.id === productId);
 
   if (!product) {
     return (
-      <div>
-        <h2>Product not found!</h2>
-        <p>
+      <div className="p-8 text-center">
+        <h2 className="text-2xl font-bold mb-2">Product not found!</h2>
+        <p className="text-gray-600">
           Sorry, we couldn't find the product you're looking for.{' '}
-          <a href="/shop">Go back to shop</a>.
+          <a href="/shop" className="text-blue-500 hover:underline">Go back to shop</a>.
         </p>
       </div>
     );
@@ -45,7 +46,7 @@ const ProductDetails = ({ addToCart }: ProductDetailsProps) => {
 
   return (
     <div className="product-details p-8 max-w-5xl mx-auto">
-      {/* Product Info */}
+      {/* Produkt-info */}
       <div className="product-info mb-6">
         <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
         <p className="text-sm text-gray-500 mb-1">
@@ -66,7 +67,7 @@ const ProductDetails = ({ addToCart }: ProductDetailsProps) => {
         <p className="text-gray-700 mb-6">{product.description}</p>
       </div>
 
-      {/* Buttons */}
+      {/* Knapper */}
       <div className="flex gap-4 mb-8">
         <button
           onClick={() => addToCart(product, 1)}
@@ -82,11 +83,11 @@ const ProductDetails = ({ addToCart }: ProductDetailsProps) => {
         </button>
       </div>
 
-      {/* Submit Review Section */}
+      {/* Submit Review */}
       <div className="review-section mt-10">
         <h2 className="text-2xl font-bold mb-4">Submit a Review</h2>
 
-        {/* Stars */}
+        {/* Stjerner */}
         <div className="flex items-center mb-3">
           {[1, 2, 3, 4, 5].map((star) =>
             star <= rating ? (
@@ -105,7 +106,7 @@ const ProductDetails = ({ addToCart }: ProductDetailsProps) => {
           )}
         </div>
 
-        {/* Review Text Area */}
+        {/* Review Textarea */}
         <textarea
           value={review}
           onChange={(e) => setReview(e.target.value)}

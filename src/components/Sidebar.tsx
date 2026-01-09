@@ -7,116 +7,104 @@ type SidebarProps = {
   onSortChange: (sortOrder: "price-asc" | "price-desc") => void;
 };
 
-export function Sidebar({
-  onCategoryChange,
-  onPriceFilterChange,
-  onSortChange,
-}: SidebarProps) {
+const Sidebar = ({ onCategoryChange, onPriceFilterChange, onSortChange }: SidebarProps) => {
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(1000);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const categories = ["electronics", "clothing", "home"];
 
-  // Handle category click
+  // Håndterer kategori-klikk
   const handleCategoryClick = (category: string | null) => {
     setSelectedCategory(category);
-    onCategoryChange(category); // Pass category up to parent (Shop)
+    onCategoryChange(category);
   };
 
-  // Handle sort option selection
+  // Håndterer sortering
   const handleSortChange = (order: "price-asc" | "price-desc") => {
-    onSortChange(order); // Pass sorting option up to parent
+    onSortChange(order);
   };
 
-  // Handle price filter application
+  // Håndterer prisfilter
   const handlePriceFilter = () => {
-    onPriceFilterChange(minPrice, maxPrice); // Pass minPrice and maxPrice up to parent
+    onPriceFilterChange(minPrice, maxPrice);
   };
 
   return (
-    <div className="w-full sm:w-64 bg-white p-4 sm:p-6">
-      {/* Categories */}
-      <h2 className="text-xl font-semibold mt-6">Categories</h2>
-      <FaMinus className="text-gray-300 flex-1 mb-4" /> {/* Horizontal line */}
-      <ul className="space-y-2">
-        <li
-          className={`text-gray-700 hover:text-blue-500 cursor-pointer ${
-            selectedCategory === null ? "text-blue-500 font-semibold" : ""
-          }`}
-          onClick={() => handleCategoryClick(null)} // Reset category to "All"
-        >
-          All Categories
-        </li>
-        {categories.map((category) => (
+    <aside className="w-full sm:w-64">
+      {/* Padding internt */}
+      <div className="p-4 sm:p-6">
+        {/* Kategorier */}
+        <h2 className="text-xl font-semibold mb-2">Categories</h2>
+        <FaMinus className="text-gray-300 mb-4" />
+        <ul className="space-y-2">
           <li
-            key={category}
-            className={`text-gray-700 hover:text-blue-500 cursor-pointer ${
-              selectedCategory === category ? "text-blue-500 font-semibold" : ""
+            className={`cursor-pointer ${
+              selectedCategory === null ? "text-blue-500 font-semibold" : "text-gray-700 hover:text-blue-500"
             }`}
-            onClick={() => handleCategoryClick(category)} // Update selected category
+            onClick={() => handleCategoryClick(null)}
           >
-            {category}
+            All Categories
           </li>
-        ))}
-      </ul>
+          {categories.map((category) => (
+            <li
+              key={category}
+              className={`cursor-pointer ${
+                selectedCategory === category ? "text-blue-500 font-semibold" : "text-gray-700 hover:text-blue-500"
+              }`}
+              onClick={() => handleCategoryClick(category)}
+            >
+              {category}
+            </li>
+          ))}
+        </ul>
 
-      {/* Sort Products */}
-      <h2 className="text-xl font-semibold mt-6">Sort Products</h2>
-      <FaMinus className="text-gray-300 flex-1 mb-4" /> {/* Horizontal line */}
-      <ul className="space-y-2">
-        <li
-          className="text-gray-700 hover:text-blue-500 cursor-pointer"
-          onClick={() => handleSortChange("price-asc")}
-        >
-          Price (Low to High)
-        </li>
-        <li
-          className="text-gray-700 hover:text-blue-500 cursor-pointer"
-          onClick={() => handleSortChange("price-desc")}
-        >
-          Price (High to Low)
-        </li>
-      </ul>
+        {/* Sortering */}
+        <h2 className="text-xl font-semibold mt-6 mb-2">Sort Products</h2>
+        <FaMinus className="text-gray-300 mb-4" />
+        <ul className="space-y-2">
+          <li className="cursor-pointer text-gray-700 hover:text-blue-500" onClick={() => handleSortChange("price-asc")}>
+            Price (Low to High)
+          </li>
+          <li className="cursor-pointer text-gray-700 hover:text-blue-500" onClick={() => handleSortChange("price-desc")}>
+            Price (High to Low)
+          </li>
+        </ul>
 
-      {/* Price Filter */}
-      <h2 className="text-xl font-semibold mt-6">Price</h2>
-      <FaMinus className="text-gray-300 flex-1 mb-4" /> {/* Horizontal line */}
-      <div className="space-y-2">
-        <div className="flex items-center">
-          <label htmlFor="minPrice" className="mr-2">
-            Min Price
-          </label>
-          <input
-            type="number"
-            id="minPrice"
-            value={minPrice}
-            onChange={(e) => setMinPrice(Number(e.target.value))}
-            className="p-1 border border-gray-300 rounded"
-          />
+        {/* Prisfilter */}
+        <h2 className="text-xl font-semibold mt-6 mb-2">Price</h2>
+        <FaMinus className="text-gray-300 mb-4" />
+        <div className="space-y-2">
+          <div className="flex items-center">
+            <label htmlFor="minPrice" className="mr-2">Min</label>
+            <input
+              type="number"
+              id="minPrice"
+              value={minPrice}
+              onChange={(e) => setMinPrice(Number(e.target.value))}
+              className="p-1 border border-gray-300 rounded w-full"
+            />
+          </div>
+          <div className="flex items-center">
+            <label htmlFor="maxPrice" className="mr-2">Max</label>
+            <input
+              type="number"
+              id="maxPrice"
+              value={maxPrice}
+              onChange={(e) => setMaxPrice(Number(e.target.value))}
+              className="p-1 border border-gray-300 rounded w-full"
+            />
+          </div>
+          <button
+            onClick={handlePriceFilter}
+            className="mt-4 w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+          >
+            Apply Filter
+          </button>
         </div>
-        <div className="flex items-center">
-          <label htmlFor="maxPrice" className="mr-2">
-            Max Price
-          </label>
-          <input
-            type="number"
-            id="maxPrice"
-            value={maxPrice}
-            onChange={(e) => setMaxPrice(Number(e.target.value))}
-            className="p-1 border border-gray-300 rounded"
-          />
-        </div>
-
-        <button
-          onClick={handlePriceFilter}
-          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
-        >
-          Apply Filter
-        </button>
       </div>
-    </div>
+    </aside>
   );
-}
+};
 
 export default Sidebar;

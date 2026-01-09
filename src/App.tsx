@@ -8,6 +8,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Breadcrumb from "./components/Breadcrumb";
 import Cart from "./components/Cart";
+import HeroBanner from "./components/HeroBanner";
 
 // Sider
 import Home from "./Pages/Home";
@@ -21,15 +22,7 @@ import TermsAndConditions from "./Pages/TermsAndConditions";
 import Contact from "./Pages/Contact";
 
 function App() {
-  const {
-    cart,
-    originalProducts,
-    addToCart,
-    removeFromCart,
-    setCart,
-    setProducts,
-  } = useStore();
-
+  const { cart, originalProducts, addToCart, removeFromCart, setCart, setProducts } = useStore();
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const { user } = useUser();
@@ -45,41 +38,26 @@ function App() {
     }
   }, [originalProducts, setProducts]);
 
-  // 🔄 Hent cart fra MongoDB ved innlogging
+  // Hent cart fra backend
   useEffect(() => {
     if (user?.id) {
       fetch(`http://localhost:5000/api/cart/${user.id}`)
         .then((res) => res.json())
         .then((data) => {
-          if (data.items) {
-            setCart(data.items);
-            console.log("✅ Cart hentet fra MongoDB");
-          }
+          if (data.items) setCart(data.items);
         })
-        .catch((err) => console.error("❌ Feil ved henting av cart:", err));
+        .catch((err) => console.error(err));
     }
   }, [user?.id, setCart]);
 
-  // ☁️ Lagre cart til MongoDB når den endres
+  // Lagre cart til backend
   useEffect(() => {
-    if (user?.id && cart.length > 0) {
+    if (user?.id) {
       fetch("http://localhost:5000/api/cart", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: user.id,
-          items: cart,
-        }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log("🛒 Cart synkronisert:", data.message);
-        })
-        .catch((err) => {
-          console.error("❌ Cart sync error:", err);
-        });
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: user.id, items: cart }),
+      }).catch((err) => console.error(err));
     }
   }, [cart, user?.id]);
 
@@ -87,31 +65,75 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col bg-gray-50">
+        {/* Navbar */}
         <Navbar cart={cart} openCart={openCart} />
-        <Breadcrumb />
 
+        {/* Main content */}
         <main className="flex-1 overflow-auto">
           <Routes>
-            <Route path="/" element={<Home />} />
+            {/* Forside */}
+            <Route
+              path="/"
+              element={
+                <>
+                  <HeroBanner />
+                  <div className="mt-4">
+                    <Breadcrumb />
+                  </div>
+                  <Home />
+                </>
+              }
+            />
+
+            {/* Shop */}
             <Route
               path="/shop"
-              element={<Shop products={originalProducts} addToCart={addToCart} />}
+              element={
+                <>
+                  <div className="mt-4">
+                    <Breadcrumb />
+                  </div>
+                  <Shop products={originalProducts} addToCart={addToCart} />
+                </>
+              }
             />
             <Route
               path="/shop/:category"
-              element={<Shop products={originalProducts} addToCart={addToCart} />}
+              element={
+                <>
+                  <div className="mt-4">
+                    <Breadcrumb />
+                  </div>
+                  <Shop products={originalProducts} addToCart={addToCart} />
+                </>
+              }
             />
-            <Route path="/product" element={<Navigate to="/shop" replace />} />
+
+            {/* Product Details */}
             <Route
               path="/product/:id"
-              element={<ProductDetails addToCart={addToCart} />}
+              element={
+                <>
+                  <div className="mt-4">
+                    <Breadcrumb />
+                  </div>
+                  <ProductDetails addToCart={addToCart} />
+                </>
+              }
             />
+
+            {/* Redirect /product without id */}
+            <Route path="/product" element={<Navigate to="/shop" replace />} />
+
+            {/* Checkout & confirmation */}
             <Route
               path="/checkout"
               element={<Checkout cart={cart} removeFromCart={removeFromCart} />}
             />
             <Route path="/order-confirmation" element={<OrderConfirmation />} />
+
+            {/* Informasjonssider */}
             <Route path="/about" element={<About />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
@@ -119,18 +141,19 @@ function App() {
           </Routes>
         </main>
 
+        {/* Footer */}
         <Footer />
-      </div>
 
-      {/* 🛒 Cart Sidebar */}
-      {isCartOpen && (
-        <Cart
-          cart={cart}
-          removeFromCart={removeFromCart}
-          isCartOpen={isCartOpen}
-          closeCart={closeCart}
-        />
-      )}
+        {/* Cart modal */}
+        {isCartOpen && (
+          <Cart
+            cart={cart}
+            removeFromCart={removeFromCart}
+            isCartOpen={isCartOpen}
+            closeCart={closeCart}
+          />
+        )}
+      </div>
     </Router>
   );
 }
