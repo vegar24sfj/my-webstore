@@ -26,7 +26,9 @@ const PopularCategories = () => {
               alt={category.name}
               className="w-32 h-32 sm:w-40 sm:h-40 object-cover rounded-full shadow-md"
             />
-            <h3 className="mt-4 font-semibold text-xl text-center">{category.name}</h3>
+            <h3 className="mt-4 font-semibold text-xl text-center">
+              {category.name}
+            </h3>
           </Link>
         ))}
       </div>

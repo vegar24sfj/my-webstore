@@ -6,7 +6,9 @@ export function Breadcrumb() {
   const paths = location.pathname.split("/").filter(Boolean);
 
   return (
-    <div className="bg-gray-100 px-4 py-2"> {/* mindre padding */}
+    <div className="bg-gray-100 px-4 py-2">
+      {" "}
+      {/* mindre padding */}
       <nav aria-label="Breadcrumb">
         <ol className="flex text-gray-700 space-x-1 sm:space-x-2">
           <li>

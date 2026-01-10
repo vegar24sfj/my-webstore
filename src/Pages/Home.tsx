@@ -10,7 +10,8 @@ const Home: React.FC = () => {
           Welcome to Our Store
         </h1>
         <p className="text-lg sm:text-xl text-gray-700 mb-6 max-w-2xl mx-auto sm:mx-0">
-          Find the best products at amazing prices! Explore our categories or start shopping now.
+          Find the best products at amazing prices! Explore our categories or
+          start shopping now.
         </p>
         <Link
           to="/shop"

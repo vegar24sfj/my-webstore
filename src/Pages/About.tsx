@@ -5,8 +5,9 @@ const About = () => {
         About Us
       </h1>
       <p className="text-lg text-gray-700 mb-4">
-        We are a leading e-commerce platform providing quality products for every need.
-        Our mission is to deliver a seamless shopping experience to our customers.
+        We are a leading e-commerce platform providing quality products for
+        every need. Our mission is to deliver a seamless shopping experience to
+        our customers.
       </p>
       <p className="text-lg text-gray-700 mb-4">
         Our team is committed to quality, customer satisfaction, and innovation.

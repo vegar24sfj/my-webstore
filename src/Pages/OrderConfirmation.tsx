@@ -16,8 +16,8 @@ export function OrderConfirmation() {
         Order Confirmed!
       </h1>
       <p className="text-base text-gray-700 mb-6">
-        Thank you for your purchase. Your order has been successfully placed.
-        We appreciate your business!
+        Thank you for your purchase. Your order has been successfully placed. We
+        appreciate your business!
       </p>
       <div>
         <button

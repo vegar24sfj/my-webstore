@@ -10,12 +10,19 @@ interface ShopProps {
 }
 
 const Shop: React.FC<ShopProps> = ({ products, addToCart }) => {
-  const { selectedCategory, setSelectedCategory, setProducts, originalProducts } = useStore();
+  const {
+    selectedCategory,
+    setSelectedCategory,
+    setProducts,
+    originalProducts,
+  } = useStore();
   const { category } = useParams();
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(products);
   const [minPrice, setMinPrice] = useState<number>(0);
   const [maxPrice, setMaxPrice] = useState<number>(1000);
-  const [sortOrder, setSortOrder] = useState<"price-asc" | "price-desc">("price-asc");
+  const [sortOrder, setSortOrder] = useState<"price-asc" | "price-desc">(
+    "price-asc"
+  );
 
   useEffect(() => {
     if (category) setSelectedCategory(category);
@@ -40,14 +47,23 @@ const Shop: React.FC<ShopProps> = ({ products, addToCart }) => {
 
     setFilteredProducts(newFilteredProducts);
     setProducts(newFilteredProducts);
-  }, [selectedCategory, minPrice, maxPrice, sortOrder, originalProducts, setProducts]);
+  }, [
+    selectedCategory,
+    minPrice,
+    maxPrice,
+    sortOrder,
+    originalProducts,
+    setProducts,
+  ]);
 
-  const handleCategoryChange = (category: string | null) => setSelectedCategory(category);
+  const handleCategoryChange = (category: string | null) =>
+    setSelectedCategory(category);
   const handlePriceFilterChange = (min: number, max: number) => {
     setMinPrice(min);
     setMaxPrice(max);
   };
-  const handleSortChange = (order: "price-asc" | "price-desc") => setSortOrder(order);
+  const handleSortChange = (order: "price-asc" | "price-desc") =>
+    setSortOrder(order);
 
   return (
     <div className="flex flex-col lg:flex-row">
@@ -57,18 +73,25 @@ const Shop: React.FC<ShopProps> = ({ products, addToCart }) => {
         onSortChange={handleSortChange}
       />
       <main className="flex-1 p-6 lg:p-8 overflow-auto">
-        <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">Shop</h1>
+        <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">
+          Shop
+        </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product) => (
-              <div key={product.id} className="p-4 bg-white rounded shadow hover:shadow-lg transition">
+              <div
+                key={product.id}
+                className="p-4 bg-white rounded shadow hover:shadow-lg transition"
+              >
                 <Link to={`/product/${product.id}`}>
                   <img
                     src={product.imageUrl}
                     alt={product.name}
                     className="w-full h-48 object-cover mb-4 rounded"
                   />
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">{product.name}</h3>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                    {product.name}
+                  </h3>
                 </Link>
                 <p className="text-lg text-gray-700 mb-2">${product.price}</p>
                 <button
@@ -80,7 +103,9 @@ const Shop: React.FC<ShopProps> = ({ products, addToCart }) => {
               </div>
             ))
           ) : (
-            <p className="text-gray-700 text-center col-span-full">No products available</p>
+            <p className="text-gray-700 text-center col-span-full">
+              No products available
+            </p>
           )}
         </div>
       </main>

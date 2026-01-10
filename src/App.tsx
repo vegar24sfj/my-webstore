@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/clerk-react";
 import { useStore } from "./store/store";
@@ -22,7 +27,14 @@ import TermsAndConditions from "./Pages/TermsAndConditions";
 import Contact from "./Pages/Contact";
 
 function App() {
-  const { cart, originalProducts, addToCart, removeFromCart, setCart, setProducts } = useStore();
+  const {
+    cart,
+    originalProducts,
+    addToCart,
+    removeFromCart,
+    setCart,
+    setProducts,
+  } = useStore();
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const { user } = useUser();
@@ -136,7 +148,10 @@ function App() {
             {/* Informasjonssider */}
             <Route path="/about" element={<About />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+            <Route
+              path="/terms-and-conditions"
+              element={<TermsAndConditions />}
+            />
             <Route path="/contact" element={<Contact />} />
           </Routes>
         </main>

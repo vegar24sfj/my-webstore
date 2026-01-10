@@ -22,7 +22,9 @@ export function Footer() {
         <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-20">
           {/* Quick Links Section */}
           <div>
-            <h2 className="text-black text-xl font-semibold mb-4">Quicklinks</h2>
+            <h2 className="text-black text-xl font-semibold mb-4">
+              Quicklinks
+            </h2>
             <ul className="space-y-2">
               <li>
                 <Link to="/" className="text-gray-700 hover:text-blue-500">
@@ -44,7 +46,9 @@ export function Footer() {
 
           {/* Information Section */}
           <div>
-            <h2 className="text-black text-xl font-semibold mb-4">Information</h2>
+            <h2 className="text-black text-xl font-semibold mb-4">
+              Information
+            </h2>
             <ul className="space-y-2">
               <li>
                 <Link

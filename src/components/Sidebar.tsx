@@ -7,7 +7,11 @@ type SidebarProps = {
   onSortChange: (sortOrder: "price-asc" | "price-desc") => void;
 };
 
-const Sidebar = ({ onCategoryChange, onPriceFilterChange, onSortChange }: SidebarProps) => {
+const Sidebar = ({
+  onCategoryChange,
+  onPriceFilterChange,
+  onSortChange,
+}: SidebarProps) => {
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(1000);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -40,7 +44,9 @@ const Sidebar = ({ onCategoryChange, onPriceFilterChange, onSortChange }: Sideba
         <ul className="space-y-2">
           <li
             className={`cursor-pointer ${
-              selectedCategory === null ? "text-blue-500 font-semibold" : "text-gray-700 hover:text-blue-500"
+              selectedCategory === null
+                ? "text-blue-500 font-semibold"
+                : "text-gray-700 hover:text-blue-500"
             }`}
             onClick={() => handleCategoryClick(null)}
           >
@@ -50,7 +56,9 @@ const Sidebar = ({ onCategoryChange, onPriceFilterChange, onSortChange }: Sideba
             <li
               key={category}
               className={`cursor-pointer ${
-                selectedCategory === category ? "text-blue-500 font-semibold" : "text-gray-700 hover:text-blue-500"
+                selectedCategory === category
+                  ? "text-blue-500 font-semibold"
+                  : "text-gray-700 hover:text-blue-500"
               }`}
               onClick={() => handleCategoryClick(category)}
             >
@@ -63,10 +71,16 @@ const Sidebar = ({ onCategoryChange, onPriceFilterChange, onSortChange }: Sideba
         <h2 className="text-xl font-semibold mt-6 mb-2">Sort Products</h2>
         <FaMinus className="text-gray-300 mb-4" />
         <ul className="space-y-2">
-          <li className="cursor-pointer text-gray-700 hover:text-blue-500" onClick={() => handleSortChange("price-asc")}>
+          <li
+            className="cursor-pointer text-gray-700 hover:text-blue-500"
+            onClick={() => handleSortChange("price-asc")}
+          >
             Price (Low to High)
           </li>
-          <li className="cursor-pointer text-gray-700 hover:text-blue-500" onClick={() => handleSortChange("price-desc")}>
+          <li
+            className="cursor-pointer text-gray-700 hover:text-blue-500"
+            onClick={() => handleSortChange("price-desc")}
+          >
             Price (High to Low)
           </li>
         </ul>
@@ -76,7 +90,9 @@ const Sidebar = ({ onCategoryChange, onPriceFilterChange, onSortChange }: Sideba
         <FaMinus className="text-gray-300 mb-4" />
         <div className="space-y-2">
           <div className="flex items-center">
-            <label htmlFor="minPrice" className="mr-2">Min</label>
+            <label htmlFor="minPrice" className="mr-2">
+              Min
+            </label>
             <input
               type="number"
               id="minPrice"
@@ -86,7 +102,9 @@ const Sidebar = ({ onCategoryChange, onPriceFilterChange, onSortChange }: Sideba
             />
           </div>
           <div className="flex items-center">
-            <label htmlFor="maxPrice" className="mr-2">Max</label>
+            <label htmlFor="maxPrice" className="mr-2">
+              Max
+            </label>
             <input
               type="number"
               id="maxPrice"

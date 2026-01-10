@@ -2,7 +2,12 @@ import { Link } from "react-router-dom";
 import { CartItem } from "../types/types";
 import { BsCart3 } from "react-icons/bs";
 import { useState } from "react";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+} from "@clerk/clerk-react";
 
 type NavbarProps = {
   cart: CartItem[];
@@ -25,18 +30,33 @@ const Navbar = ({ cart, openCart }: NavbarProps) => {
           </Link>
 
           <div className="hidden md:flex space-x-6">
-            <Link to="/" className="hover:text-blue-500">Home</Link>
-            <Link to="/shop" className="hover:text-blue-500">Shop</Link>
-            <Link to="/about" className="hover:text-blue-500">About</Link>
-            <Link to="/privacy-policy" className="hover:text-blue-500">Privacy Policy</Link>
-            <Link to="/terms-and-conditions" className="hover:text-blue-500">Terms & Conditions</Link>
-            <Link to="/contact" className="hover:text-blue-500">Contact</Link>
+            <Link to="/" className="hover:text-blue-500">
+              Home
+            </Link>
+            <Link to="/shop" className="hover:text-blue-500">
+              Shop
+            </Link>
+            <Link to="/about" className="hover:text-blue-500">
+              About
+            </Link>
+            <Link to="/privacy-policy" className="hover:text-blue-500">
+              Privacy Policy
+            </Link>
+            <Link to="/terms-and-conditions" className="hover:text-blue-500">
+              Terms & Conditions
+            </Link>
+            <Link to="/contact" className="hover:text-blue-500">
+              Contact
+            </Link>
           </div>
         </div>
 
         {/* Mobil hamburger meny */}
         <div className="md:hidden flex items-center">
-          <button onClick={toggleMobileMenu} className="text-gray-950 focus:outline-none">
+          <button
+            onClick={toggleMobileMenu}
+            className="text-gray-950 focus:outline-none"
+          >
             {isMobileMenuOpen ? (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -45,7 +65,12 @@ const Navbar = ({ cart, openCart }: NavbarProps) => {
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             ) : (
               <svg
@@ -55,7 +80,12 @@ const Navbar = ({ cart, openCart }: NavbarProps) => {
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               </svg>
             )}
           </button>
@@ -91,14 +121,28 @@ const Navbar = ({ cart, openCart }: NavbarProps) => {
       </div>
 
       {/* Mobil meny */}
-      <div className={`${isMobileMenuOpen ? "block" : "hidden"} md:hidden mt-4`}>
+      <div
+        className={`${isMobileMenuOpen ? "block" : "hidden"} md:hidden mt-4`}
+      >
         <div className="flex flex-col space-y-4 text-center">
-          <Link to="/" className="hover:text-blue-500">Home</Link>
-          <Link to="/shop" className="hover:text-blue-500">Shop</Link>
-          <Link to="/about" className="hover:text-blue-500">About</Link>
-          <Link to="/privacy-policy" className="hover:text-blue-500">Privacy Policy</Link>
-          <Link to="/terms-and-conditions" className="hover:text-blue-500">Terms & Conditions</Link>
-          <Link to="/contact" className="hover:text-blue-500">Contact</Link>
+          <Link to="/" className="hover:text-blue-500">
+            Home
+          </Link>
+          <Link to="/shop" className="hover:text-blue-500">
+            Shop
+          </Link>
+          <Link to="/about" className="hover:text-blue-500">
+            About
+          </Link>
+          <Link to="/privacy-policy" className="hover:text-blue-500">
+            Privacy Policy
+          </Link>
+          <Link to="/terms-and-conditions" className="hover:text-blue-500">
+            Terms & Conditions
+          </Link>
+          <Link to="/contact" className="hover:text-blue-500">
+            Contact
+          </Link>
         </div>
       </div>
     </nav>

@@ -36,11 +36,14 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ addToCart }) => {
     }
   };
 
-  if (!product) return <p className="text-gray-700 text-center p-6">Product not found</p>;
+  if (!product)
+    return <p className="text-gray-700 text-center p-6">Product not found</p>;
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-4xl font-bold text-gray-800 mb-6 text-center">{product.name}</h1>
+      <h1 className="text-4xl font-bold text-gray-800 mb-6 text-center">
+        {product.name}
+      </h1>
 
       <div className="flex flex-col lg:flex-row gap-6">
         <img
@@ -50,7 +53,9 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ addToCart }) => {
         />
         <div className="flex-1">
           <p className="text-lg text-gray-700 mb-4">{product.description}</p>
-          <p className="text-2xl font-semibold text-gray-800 mb-4">${product.price}</p>
+          <p className="text-2xl font-semibold text-gray-800 mb-4">
+            ${product.price}
+          </p>
 
           <div className="flex items-center gap-4 mb-4">
             <input
@@ -70,7 +75,9 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ addToCart }) => {
 
           {/* Review & Rating Section */}
           <div className="mt-8 border-t pt-6">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Submit a Review</h2>
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+              Submit a Review
+            </h2>
             <form onSubmit={handleSubmitReview} className="space-y-4">
               <div>
                 <label className="block mb-1 text-gray-700">Rating:</label>
@@ -111,7 +118,9 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ addToCart }) => {
             {/* Display submitted reviews */}
             {submittedReviews.length > 0 && (
               <div className="mt-6">
-                <h3 className="text-xl font-semibold text-gray-800 mb-4">Reviews</h3>
+                <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                  Reviews
+                </h3>
                 <ul className="space-y-4">
                   {submittedReviews.map((rev, idx) => (
                     <li key={idx} className="border p-4 rounded bg-gray-50">
