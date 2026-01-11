@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export function Footer() {
   return (
-    <footer className="bg-gray-100 text-blue-500 p-4 overflow-auto">
+    <footer className="bg-gray-200 text-blue-500 p-4 overflow-auto">
       <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-start space-y-8 sm:space-y-0 sm:space-x-20">
         {/* Left Side with Logo and Paragraph */}
         <div className="flex flex-col items-start">

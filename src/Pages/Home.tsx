@@ -5,7 +5,7 @@ const Home: React.FC = () => {
   return (
     <div className="p-0">
       {/* Forsideinnhold under HeroBanner */}
-      <div className="p-16 max-w-7xl mx-auto text-center sm:text-left">
+      <div className="max-w-7xl mx-auto text-center sm:text-left bg-gray-200 rounded-lg p-0 sm:p-4">
         <h1 className="text-3xl sm:text-4xl font-bold mb-4">
           Welcome to Our Store
         </h1>

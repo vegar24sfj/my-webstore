@@ -3,12 +3,14 @@ import { Link, useLocation } from "react-router-dom";
 
 export function Breadcrumb() {
   const location = useLocation();
+
+  // Skjul breadcrumb på home page
+  if (location.pathname === "/") return null;
+
   const paths = location.pathname.split("/").filter(Boolean);
 
   return (
-    <div className="bg-gray-100 px-4 py-2">
-      {" "}
-      {/* mindre padding */}
+    <div className="px-4 py-2">
       <nav aria-label="Breadcrumb">
         <ol className="flex text-gray-700 space-x-1 sm:space-x-2">
           <li>

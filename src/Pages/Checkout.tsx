@@ -1,5 +1,7 @@
+// Checkout.tsx
 import { useLocation, useNavigate } from "react-router-dom";
 import { CartItem } from "../types/types";
+import { useStore } from "../store/store";
 
 type CheckoutProps = {
   cart: CartItem[];
@@ -8,15 +10,19 @@ type CheckoutProps = {
 
 const Checkout = ({ cart, removeFromCart }: CheckoutProps) => {
   const navigate = useNavigate();
+  const { setCart } = useStore(); // <-- hent setCart fra store
   const location = useLocation();
   const { product, quantity } = location.state || {};
   const isSingleProductCheckout = Boolean(product);
 
+  // Velg hvilke varer som skal vises i checkout
   const checkoutItems = isSingleProductCheckout
     ? [{ ...product, quantity }]
     : cart;
 
+  // Tøm cart og gå til bekreftelse
   const handlePlaceOrder = () => {
+    setCart([]); // Tøm cart
     navigate("/order-confirmation");
   };
 
@@ -24,6 +30,7 @@ const Checkout = ({ cart, removeFromCart }: CheckoutProps) => {
     removeFromCart(id);
   };
 
+  // Totalbeløp
   const totalAmount = checkoutItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
