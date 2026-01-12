@@ -1,12 +1,13 @@
+// Home.tsx
 import { Link } from "react-router-dom";
-import PopularCategories from "../components/PopularCategories"; // Eksisterende komponent
+import PopularCategories from "../components/PopularCategories";
 
 const Home: React.FC = () => {
   return (
-    <div className="p-0">
+    <>
       {/* Forsideinnhold under HeroBanner */}
-      <div className="max-w-7xl mx-auto text-center sm:text-left bg-gray-200 rounded-lg p-0 sm:p-4">
-        <h1 className="text-3xl sm:text-4xl font-bold mb-4">
+      <section className="max-w-7xl mx-auto text-center sm:text-left bg-gray-200 rounded-lg p-6 sm:p-8">
+        <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-gray-900">
           Welcome to Our Store
         </h1>
         <p className="text-lg sm:text-xl text-gray-700 mb-6 max-w-2xl mx-auto sm:mx-0">
@@ -19,13 +20,13 @@ const Home: React.FC = () => {
         >
           Start Shopping
         </Link>
-      </div>
+      </section>
 
       {/* Seksjon for populære kategorier */}
-      <div className="mt-16">
+      <section className="mt-10 max-w-7xl mx-auto px-4 sm:px-0">
         <PopularCategories />
-      </div>
-    </div>
+      </section>
+    </>
   );
 };
 

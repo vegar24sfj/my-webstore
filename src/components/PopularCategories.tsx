@@ -8,12 +8,15 @@ const PopularCategories = () => {
   ];
 
   return (
-    <div className="mb-6 w-full"> {/* Fjernet padding */}
-      <div className="max-w-7xl mx-auto"> {/* Sentraliserer innholdet */}
+    <div className="mb-6 w-full">
+      {" "}
+      {/* Fjernet padding */}
+      <div className="max-w-7xl mx-auto">
+        {" "}
+        {/* Sentraliserer innholdet */}
         <h2 className="text-2xl sm:text-3xl font-bold mb-8 sm:pl-4">
           Explore Popular Categories
         </h2>
-
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 justify-items-center">
           {categories.map((category) => (

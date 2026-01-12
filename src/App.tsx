@@ -35,6 +35,7 @@ function App() {
     setCart,
     setProducts,
   } = useStore();
+
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const { user } = useUser();
@@ -73,7 +74,24 @@ function App() {
     }
   }, [cart, user?.id]);
 
-  if (loading) return <div className="p-10 text-center">Loading...</div>;
+  // Lukk cart når man klikker utenfor
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const cartElement = document.getElementById("cart-sidebar");
+      if (
+        isCartOpen &&
+        cartElement &&
+        !cartElement.contains(e.target as Node)
+      ) {
+        closeCart();
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isCartOpen]);
+
+  if (loading)
+    return <div className="p-10 text-center">Loading products...</div>;
 
   return (
     <Router>
@@ -82,30 +100,23 @@ function App() {
         <Navbar cart={cart} openCart={openCart} />
 
         {/* Main content */}
-        <main className="flex-1">
+        <main className="flex-grow">
           <Routes>
-            {/* Forside */}
             <Route
               path="/"
               element={
                 <>
                   <HeroBanner />
-                  <div className="mt-4">
-                    <Breadcrumb />
-                  </div>
+                  <Breadcrumb />
                   <Home />
                 </>
               }
             />
-
-            {/* Shop */}
             <Route
               path="/shop"
               element={
                 <>
-                  <div className="mt-4">
-                    <Breadcrumb />
-                  </div>
+                  <Breadcrumb />
                   <Shop products={originalProducts} addToCart={addToCart} />
                 </>
               }
@@ -114,38 +125,26 @@ function App() {
               path="/shop/:category"
               element={
                 <>
-                  <div className="mt-4">
-                    <Breadcrumb />
-                  </div>
+                  <Breadcrumb />
                   <Shop products={originalProducts} addToCart={addToCart} />
                 </>
               }
             />
-
-            {/* Product Details */}
             <Route
               path="/product/:id"
               element={
                 <>
-                  <div className="mt-4">
-                    <Breadcrumb />
-                  </div>
+                  <Breadcrumb />
                   <ProductDetails addToCart={addToCart} />
                 </>
               }
             />
-
-            {/* Redirect /product without id */}
             <Route path="/product" element={<Navigate to="/shop" replace />} />
-
-            {/* Checkout & confirmation */}
             <Route
               path="/checkout"
               element={<Checkout cart={cart} removeFromCart={removeFromCart} />}
             />
             <Route path="/order-confirmation" element={<OrderConfirmation />} />
-
-            {/* Informasjonssider */}
             <Route path="/about" element={<About />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route
@@ -156,18 +155,16 @@ function App() {
           </Routes>
         </main>
 
-        {/* Footer */}
+        {/* Footer alltid nederst */}
         <Footer />
 
-        {/* Cart modal */}
-        {isCartOpen && (
-          <Cart
-            cart={cart}
-            removeFromCart={removeFromCart}
-            isCartOpen={isCartOpen}
-            closeCart={closeCart}
-          />
-        )}
+        {/* Cart sidebar */}
+        <Cart
+          cart={cart}
+          removeFromCart={removeFromCart}
+          isCartOpen={isCartOpen}
+          closeCart={closeCart}
+        />
       </div>
     </Router>
   );

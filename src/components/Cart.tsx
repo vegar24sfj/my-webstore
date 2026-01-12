@@ -1,6 +1,7 @@
-// Cart.tsx
+import { useEffect, useRef } from "react";
 import { CartItem } from "../types/types";
 import { useNavigate } from "react-router-dom";
+import { BsTrash } from "react-icons/bs";
 
 type CartProps = {
   cart: CartItem[];
@@ -11,6 +12,8 @@ type CartProps = {
 
 const Cart = ({ cart, removeFromCart, isCartOpen, closeCart }: CartProps) => {
   const navigate = useNavigate();
+  const cartRef = useRef<HTMLDivElement>(null);
+
   const totalAmount = cart.reduce(
     (total, item) => total + item.price * item.quantity,
     0
@@ -21,13 +24,24 @@ const Cart = ({ cart, removeFromCart, isCartOpen, closeCart }: CartProps) => {
     navigate("/checkout");
   };
 
+  // Click outside to close
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (cartRef.current && !cartRef.current.contains(event.target as Node)) {
+        closeCart();
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [closeCart]);
+
   return (
     <div
-      className={`fixed top-0 right-0 h-full z-50 transform transition-transform duration-300 ${
-        isCartOpen ? "translate-x-0" : "translate-x-full"
-      }`}
+      ref={cartRef}
+      className={`fixed top-0 right-0 h-full z-50 w-96 transform transition-transform duration-300
+        ${isCartOpen ? "translate-x-0" : "translate-x-full"}`} // <- korrekt bruk av isCartOpen
     >
-      <div className="bg-white shadow-lg w-96 max-h-full overflow-y-auto p-6 flex flex-col">
+      <div className="bg-white shadow-lg max-h-full overflow-y-auto p-6 flex flex-col h-full">
         {/* Header */}
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Your Cart</h2>
@@ -39,57 +53,54 @@ const Cart = ({ cart, removeFromCart, isCartOpen, closeCart }: CartProps) => {
           </button>
         </div>
 
+        {/* Cart Items */}
         {cart.length === 0 ? (
           <p className="text-center text-gray-600 mt-10">Your cart is empty.</p>
         ) : (
-          <>
-            {/* Cart Items */}
-            <ul className="space-y-4 flex-1">
-              {cart.map((item) => (
-                <li key={item.id} className="flex justify-between items-center">
-                  <div className="flex items-center space-x-4">
-                    <img
-                      src={item.imageUrl || "/images/default.png"}
-                      alt={item.name}
-                      className="w-16 h-16 object-cover rounded"
-                    />
-                    <div>
-                      <h3 className="font-semibold">{item.name}</h3>
-                      <p className="text-sm text-gray-600">
-                        Quantity: {item.quantity}
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        Price: ${item.price}
-                      </p>
-                    </div>
+          <ul className="space-y-4 flex-1">
+            {cart.map((item) => (
+              <li key={item.id} className="flex justify-between items-center">
+                <div className="flex items-center space-x-4">
+                  <img
+                    src={item.imageUrl || "/images/default.png"}
+                    alt={item.name}
+                    className="w-16 h-16 object-cover rounded"
+                  />
+                  <div>
+                    <h3 className="font-semibold">{item.name}</h3>
+                    <p className="text-sm text-gray-600">
+                      Quantity: {item.quantity}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      Price: ${item.price}
+                    </p>
                   </div>
-                  <button
-                    onClick={() => removeFromCart(item.id)}
-                    className="text-red-500 hover:text-red-700"
-                  >
-                    Remove
-                  </button>
-                </li>
-              ))}
-            </ul>
-
-            {/* Cart Total */}
-            <div className="mt-4 flex justify-between items-center font-semibold">
-              <p>Total:</p>
-              <p>${totalAmount.toFixed(2)}</p>
-            </div>
-
-            {/* Checkout Button */}
-            <div className="mt-6">
-              <button
-                onClick={handleCheckoutClick}
-                className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
-              >
-                Checkout
-              </button>
-            </div>
-          </>
+                </div>
+                <button
+                  onClick={() => removeFromCart(item.id)}
+                  className="text-red-500 hover:text-red-700 text-xl"
+                >
+                  <BsTrash />
+                </button>
+              </li>
+            ))}
+          </ul>
         )}
+
+        {/* Total & Checkout */}
+        <div className="mt-4 flex justify-between items-center font-semibold">
+          <p>Total:</p>
+          <p>${totalAmount.toFixed(2)}</p>
+        </div>
+
+        <div className="mt-6">
+          <button
+            onClick={handleCheckoutClick}
+            className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+          >
+            Checkout
+          </button>
+        </div>
       </div>
     </div>
   );

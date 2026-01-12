@@ -73,7 +73,7 @@ const Shop: React.FC<ShopProps> = ({ products, addToCart }) => {
         onSortChange={handleSortChange}
       />
       <main className="flex-1 p-6 lg:p-8 overflow-auto">
-        <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">
+        <h1 className="text-4xl font-bold text-gray-800 mb-8 text-left">
           Shop
         </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

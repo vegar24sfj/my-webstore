@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { CartItem } from "../types/types";
-import { BsCart3 } from "react-icons/bs";
 import { useState } from "react";
+import { BsCart3 } from "react-icons/bs";
 import {
   SignedIn,
   SignedOut,
@@ -23,7 +23,7 @@ const Navbar = ({ cart, openCart }: NavbarProps) => {
   return (
     <nav className="bg-white p-4 shadow-md">
       <div className="max-w-6xl mx-auto flex justify-between items-center text-gray-950">
-        {/* Venstre: Logo + Desktop nav links */}
+        {/* Logo + Desktop */}
         <div className="flex items-center space-x-6">
           <Link to="/" className="flex items-center">
             <img src="/images/logo.jpeg" alt="Logo" className="h-20 w-auto" />
@@ -51,7 +51,7 @@ const Navbar = ({ cart, openCart }: NavbarProps) => {
           </div>
         </div>
 
-        {/* Mobil hamburger meny */}
+        {/* Mobile hamburger */}
         <div className="md:hidden flex items-center">
           <button
             onClick={toggleMobileMenu}
@@ -91,12 +91,11 @@ const Navbar = ({ cart, openCart }: NavbarProps) => {
           </button>
         </div>
 
-        {/* Høyre: Cart + Innlogging/bruker */}
+        {/* Cart + Auth */}
         <div className="flex items-center space-x-4 relative">
           <button
             onClick={openCart}
             className="hover:text-blue-500 flex items-center relative focus:outline-none"
-            aria-label="Open cart"
           >
             <BsCart3 className="text-gray-950 text-3xl hover:text-blue-500" />
             {totalQuantity > 0 && (
@@ -106,7 +105,6 @@ const Navbar = ({ cart, openCart }: NavbarProps) => {
             )}
           </button>
 
-          {/* Clerk Authentication */}
           <SignedOut>
             <SignInButton>
               <button className="px-4 py-2 border border-blue-500 text-blue-500 rounded hover:bg-blue-500 hover:text-white transition">
@@ -120,7 +118,7 @@ const Navbar = ({ cart, openCart }: NavbarProps) => {
         </div>
       </div>
 
-      {/* Mobil meny */}
+      {/* Mobile meny */}
       <div
         className={`${isMobileMenuOpen ? "block" : "hidden"} md:hidden mt-4`}
       >
