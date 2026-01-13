@@ -6,7 +6,7 @@ const Home: React.FC = () => {
   return (
     <>
       {/* Forsideinnhold under HeroBanner */}
-      <section className="max-w-7xl mx-auto text-center sm:text-left bg-gray-200 rounded-lg p-6 sm:p-8">
+      <section className="mt-12 sm:mt-16 max-w-7xl mx-auto text-center sm:text-left bg-gray-200 rounded-2xl p-6 sm:p-8">
         <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-gray-900">
           Welcome to Our Store
         </h1>
@@ -16,14 +16,15 @@ const Home: React.FC = () => {
         </p>
         <Link
           to="/shop"
-          className="inline-block mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors duration-300"
+          state={{ selectedCategory: null }} // All Categories
+          className="inline-block mt-6 sm:mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-4xl transition-colors duration-300"
         >
           Start Shopping
         </Link>
       </section>
 
       {/* Seksjon for populære kategorier */}
-      <section className="mt-10 max-w-7xl mx-auto px-4 sm:px-0">
+      <section className="mt-8 sm:mt-10 max-w-7xl mx-auto px-4 sm:px-0">
         <PopularCategories />
       </section>
     </>

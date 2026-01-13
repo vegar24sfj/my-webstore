@@ -39,7 +39,7 @@ const Checkout = ({ cart, removeFromCart }: CheckoutProps) => {
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-4xl font-bold mb-6 text-gray-800 text-center">
+      <h1 className="text-4xl font-bold mb-8 text-gray-800 text-center">
         Checkout
       </h1>
 
