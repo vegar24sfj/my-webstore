@@ -7,7 +7,7 @@ export function OrderConfirmation() {
 
   const handleContinueShopping = () => {
     setCart([]); // Clear the cart
-    navigate("/"); // Redirect to homepage
+    navigate("/shop"); // Redirect to homepage
   };
 
   return (
@@ -22,7 +22,7 @@ export function OrderConfirmation() {
       <div>
         <button
           onClick={handleContinueShopping}
-          className="bg-green-500 text-white px-6 py-3 rounded-lg text-base font-semibold hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300"
+          className="bg-green-500 text-white px-6 py-3 rounded-4xl text-lg font-semibold hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300"
         >
           Continue Shopping
         </button>

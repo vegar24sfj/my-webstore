@@ -1,4 +1,3 @@
-// Shop.tsx
 import React, { useEffect, useState } from "react";
 import { Product } from "../types/types";
 import { Link, useParams, useLocation } from "react-router-dom";
@@ -16,8 +15,12 @@ interface ShopState {
 }
 
 const Shop: React.FC<ShopProps> = ({ products, addToCart }) => {
-  const { selectedCategory, setSelectedCategory, setProducts, originalProducts } =
-    useStore();
+  const {
+    selectedCategory,
+    setSelectedCategory,
+    setProducts,
+    originalProducts,
+  } = useStore();
 
   const { category } = useParams();
   const location = useLocation();
@@ -30,56 +33,78 @@ const Shop: React.FC<ShopProps> = ({ products, addToCart }) => {
     "price-asc"
   );
 
-  // Sett kategori ved URL eller state
+  /**
+   * Sett valgt kategori:
+   * 1. Fra URL (/shop/:category)
+   * 2. Fra location.state (breadcrumb / navigasjon)
+   * 3. Ellers: null = All categories
+   */
   useEffect(() => {
     if (category) {
       setSelectedCategory(category);
+    } else if (state?.selectedCategory !== undefined) {
+      setSelectedCategory(state.selectedCategory);
     } else {
-      setSelectedCategory(state?.selectedCategory ?? null); // null = All Categories
+      setSelectedCategory(null);
     }
   }, [category, state?.selectedCategory, setSelectedCategory]);
 
-  // Filtrering og sortering
+  /**
+   * Filtrering + sortering
+   */
   useEffect(() => {
-    let newFilteredProducts = [...originalProducts];
+    let result = [...originalProducts];
 
     // Kategori
     if (selectedCategory) {
-      newFilteredProducts = newFilteredProducts.filter(
+      result = result.filter(
         (product) => product.category === selectedCategory
       );
     }
 
-    // Prisfilter
-    newFilteredProducts = newFilteredProducts.filter(
+    // Pris
+    result = result.filter(
       (product) => product.price >= minPrice && product.price <= maxPrice
     );
 
     // Sortering
-    newFilteredProducts.sort((a, b) =>
+    result.sort((a, b) =>
       sortOrder === "price-asc" ? a.price - b.price : b.price - a.price
     );
 
-    setFilteredProducts(newFilteredProducts);
-    setProducts(newFilteredProducts);
-  }, [selectedCategory, minPrice, maxPrice, sortOrder, originalProducts, setProducts]);
+    setFilteredProducts(result);
+    setProducts(result);
+  }, [
+    selectedCategory,
+    minPrice,
+    maxPrice,
+    sortOrder,
+    originalProducts,
+    setProducts,
+  ]);
 
-  // Handlere til Sidebar
-  const handleCategoryChange = (category: string | null) => setSelectedCategory(category);
+  // Sidebar handlers
+  const handleCategoryChange = (category: string | null) =>
+    setSelectedCategory(category);
+
   const handlePriceFilterChange = (min: number, max: number) => {
     setMinPrice(min);
     setMaxPrice(max);
   };
-  const handleSortChange = (order: "price-asc" | "price-desc") => setSortOrder(order);
+
+  const handleSortChange = (order: "price-asc" | "price-desc") =>
+    setSortOrder(order);
 
   return (
     <div className="flex flex-col lg:flex-row gap-6">
       {/* Sidebar */}
       <Sidebar
-        onCategoryChange={handleCategoryChange}
-        onPriceFilterChange={handlePriceFilterChange}
-        onSortChange={handleSortChange}
-      />
+  selectedCategory={selectedCategory}
+  onCategoryChange={handleCategoryChange}
+  onPriceFilterChange={handlePriceFilterChange}
+  onSortChange={handleSortChange}
+/>
+
 
       {/* Produkter */}
       <main className="flex-1 p-6 lg:p-8 overflow-auto">
@@ -94,7 +119,10 @@ const Shop: React.FC<ShopProps> = ({ products, addToCart }) => {
                 key={product.id}
                 className="p-4 bg-white rounded shadow hover:shadow-lg transition"
               >
-                <Link to={`/product/${product.id}`}>
+                <Link
+                  to={`/product/${product.id}`}
+                  state={{ fromCategory: selectedCategory }}
+                >
                   <img
                     src={product.imageUrl || "/fallback.jpg"}
                     alt={product.name}
@@ -104,7 +132,11 @@ const Shop: React.FC<ShopProps> = ({ products, addToCart }) => {
                     {product.name}
                   </h3>
                 </Link>
-                <p className="text-lg text-gray-700 mb-2">${product.price}</p>
+
+                <p className="text-lg text-gray-700 mb-2">
+                  ${product.price}
+                </p>
+
                 <button
                   onClick={() => addToCart(product, 1)}
                   className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition"

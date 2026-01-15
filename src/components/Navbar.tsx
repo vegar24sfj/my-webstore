@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { CartItem } from "../types/types";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { BsCart3 } from "react-icons/bs";
 import {
   SignedIn,
@@ -16,79 +16,52 @@ type NavbarProps = {
 
 const Navbar = ({ cart, openCart }: NavbarProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  const location = useLocation();
+
   const totalQuantity = cart.reduce((total, item) => total + item.quantity, 0);
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
+  const closeMobileMenu = () => setIsMobileMenuOpen(false);
+
+  // Lukk mobilmeny ved navigasjon
+  useEffect(() => {
+    closeMobileMenu();
+  }, [location.pathname]);
+
+  // Lukk mobilmeny ved klikk utenfor overlay
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        isMobileMenuOpen &&
+        menuRef.current &&
+        !menuRef.current.contains(e.target as Node)
+      ) {
+        closeMobileMenu();
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isMobileMenuOpen]);
 
   return (
-    <nav className="bg-white p-4 shadow-md">
-      <div className="max-w-6xl mx-auto flex justify-between items-center text-gray-950">
+    <nav className="bg-white shadow-md relative z-50">
+      <div className="max-w-6xl mx-auto flex justify-between items-center p-4 text-gray-950">
         {/* Logo + Desktop */}
         <div className="flex items-center space-x-6">
           <Link to="/" className="flex items-center">
             <img src="/images/logo.jpeg" alt="Logo" className="h-20 w-auto" />
           </Link>
 
+          {/* Desktop meny */}
           <div className="hidden md:flex space-x-6">
-            <Link to="/" className="hover:text-blue-500">
-              Home
-            </Link>
-            <Link to="/shop" className="hover:text-blue-500">
-              Shop
-            </Link>
-            <Link to="/about" className="hover:text-blue-500">
-              About
-            </Link>
-            <Link to="/privacy-policy" className="hover:text-blue-500">
-              Privacy Policy
-            </Link>
-            <Link to="/terms-and-conditions" className="hover:text-blue-500">
-              Terms & Conditions
-            </Link>
-            <Link to="/contact" className="hover:text-blue-500">
-              Contact
-            </Link>
+            <Link to="/" className="hover:underline">Home</Link>
+            <Link to="/shop" className="hover:underline">Shop</Link>
+            <Link to="/about" className="hover:underline">About</Link>
+            <Link to="/privacy-policy" className="hover:underline">Privacy Policy</Link>
+            <Link to="/terms-and-conditions" className="hover:underline">Terms & Conditions</Link>
+            <Link to="/contact" className="hover:underline">Contact</Link>
           </div>
-        </div>
-
-        {/* Mobile hamburger */}
-        <div className="md:hidden flex items-center">
-          <button
-            onClick={toggleMobileMenu}
-            className="text-gray-950 focus:outline-none"
-          >
-            {isMobileMenuOpen ? (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            )}
-          </button>
         </div>
 
         {/* Cart + Auth */}
@@ -116,33 +89,55 @@ const Navbar = ({ cart, openCart }: NavbarProps) => {
             <UserButton />
           </SignedIn>
         </div>
-      </div>
 
-      {/* Mobile meny */}
-      <div
-        className={`${isMobileMenuOpen ? "block" : "hidden"} md:hidden mt-4`}
-      >
-        <div className="flex flex-col space-y-4 text-center">
-          <Link to="/" className="hover:text-blue-500">
-            Home
-          </Link>
-          <Link to="/shop" className="hover:text-blue-500">
-            Shop
-          </Link>
-          <Link to="/about" className="hover:text-blue-500">
-            About
-          </Link>
-          <Link to="/privacy-policy" className="hover:text-blue-500">
-            Privacy Policy
-          </Link>
-          <Link to="/terms-and-conditions" className="hover:text-blue-500">
-            Terms & Conditions
-          </Link>
-          <Link to="/contact" className="hover:text-blue-500">
-            Contact
-          </Link>
+        {/* Mobile hamburger */}
+        <div className="md:hidden flex items-center">
+          <button
+            onClick={toggleMobileMenu}
+            className="text-gray-950 focus:outline-none"
+          >
+            {isMobileMenuOpen ? (
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            )}
+          </button>
         </div>
       </div>
+
+      {/* Mobile meny overlay */}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 bg-black/30 z-40 flex justify-end">
+          <div
+            ref={menuRef}
+            className="bg-white w-64 h-full p-6 relative flex flex-col"
+          >
+            {/* X-knapp */}
+            <button
+              onClick={closeMobileMenu}
+              className="absolute top-4 right-4 text-gray-900"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Menylenker */}
+            <div className="flex flex-col space-y-4 mt-12 text-center">
+              <Link to="/" onClick={closeMobileMenu} className="hover:underline">Home</Link>
+              <Link to="/shop" onClick={closeMobileMenu} className="hover:underline">Shop</Link>
+              <Link to="/about" onClick={closeMobileMenu} className="hover:underline">About</Link>
+              <Link to="/privacy-policy" onClick={closeMobileMenu} className="hover:underline">Privacy Policy</Link>
+              <Link to="/terms-and-conditions" onClick={closeMobileMenu} className="hover:underline">Terms & Conditions</Link>
+              <Link to="/contact" onClick={closeMobileMenu} className="hover:underline">Contact</Link>
+            </div>
+          </div>
+        </div>
+      )}
     </nav>
   );
 };

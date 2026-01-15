@@ -56,40 +56,34 @@ const Contact = () => {
                 type="text"
                 id="name"
                 name="name"
-                className="w-full p-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-3 border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg"
                 placeholder="Enter your name"
                 required
               />
             </div>
 
             <div>
-              <label
-                htmlFor="email"
-                className="block text-gray-700 font-medium"
-              >
+              <label htmlFor="email" className="block text-gray-700 font-medium">
                 Your Email
               </label>
               <input
                 type="email"
                 id="email"
                 name="email"
-                className="w-full p-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-3 border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg"
                 placeholder="Enter your email"
                 required
               />
             </div>
 
             <div>
-              <label
-                htmlFor="message"
-                className="block text-gray-700 font-medium"
-              >
+              <label htmlFor="message" className="block text-gray-700 font-medium">
                 Your Message
               </label>
               <textarea
                 id="message"
                 name="message"
-                className="w-full p-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-3 border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg"
                 rows={5}
                 placeholder="Write your message"
                 required

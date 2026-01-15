@@ -8,9 +8,9 @@ const PopularCategories = () => {
   ];
 
   return (
-    <div className="w-full mb-12 sm:mb-16"> {/* <-- Økt margin-bottom */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-0">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-8 sm:pl-4">
+    <div className="w-full mb-12">
+      <div className="max-w-7xl mx-auto px-4">
+        <h2 className="text-2xl font-bold mb-8 text-center">
           Explore Popular Categories
         </h2>
 
@@ -34,8 +34,8 @@ const PopularCategories = () => {
           ))}
         </div>
 
-        {/* Ekstra padding under grid */}
-        <div className="mt-8"></div> {/* eller bruk mb på grid direkte */}
+        {/* Ekstra margin under grid */}
+        <div className="mt-8"></div>
       </div>
     </div>
   );
